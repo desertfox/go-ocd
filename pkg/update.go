@@ -16,8 +16,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.leftPane.SetSize(msg.Width/2, msg.Height)
 		m.rightPane.SetSize(msg.Width/2, msg.Height)
 
-		m.leftPane.SetContent("")
-		m.rightPane.SetContent("")
+		//m.leftPane.SetContent(m.namespace)
+		//m.rightPane.SetContent("")
 
 		if !m.ready {
 			m.ready = true

@@ -1,7 +1,6 @@
 package ui
 
 import (
-	//"github.com/go-ocd/pkg/list"
 	"github.com/go-ocd/pkg/pane"
 )
 
@@ -9,14 +8,15 @@ type Model struct {
 	leftPane  pane.Model
 	rightPane pane.Model
 	ready     bool
-	//resources list.Model
 }
 
 func NewModel() Model {
-	leftPane := pane.NewModel()
-	rightPane := pane.NewModel()
+	m := Model{}
 
-	//resources := []list.Resource{list.NewResource("a", "b", "c")}
+	m.leftPane = pane.NewModel()
+	m.rightPane = pane.NewModel()
 
-	return Model{leftPane, rightPane, false}
+	m.ready = false
+
+	return m
 }

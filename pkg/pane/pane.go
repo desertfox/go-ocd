@@ -11,7 +11,9 @@ type Model struct {
 }
 
 func NewModel() Model {
-	return Model{}
+	m := Model{}
+	m.SetContent("")
+	return m
 }
 
 func (m *Model) SetContent(content string) {
