@@ -7,11 +7,16 @@ import (
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+
+	case selectNamespaceMsg:
+		//call api service
+		m.leftPane.SetContent(string(msg))
+
 	case tea.WindowSizeMsg:
 		m.leftPane.SetSize(msg.Width/2, msg.Height)
 		m.rightPane.SetSize(msg.Width/2, msg.Height)
 
-		m.leftPane.SetContent("List of projects/namespaces")
+		m.leftPane.SetContent("")
 		m.rightPane.SetContent("")
 
 		if !m.ready {

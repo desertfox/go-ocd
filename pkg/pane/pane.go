@@ -20,12 +20,10 @@ func (m *Model) SetContent(content string) {
 
 func (m *Model) SetSize(width, height int) {
 	border := lipgloss.NormalBorder()
-	padding := 1
 
-	// Set the style so that the frame size is able to be determined from other components.
 	m.style = lipgloss.NewStyle().
-		PaddingLeft(padding).
-		PaddingRight(padding).
+		PaddingLeft(1).
+		PaddingRight(1).
 		Border(border)
 
 	m.viewport.Width = width - m.style.GetHorizontalBorderSize()

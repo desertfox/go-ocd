@@ -16,7 +16,7 @@ func main() {
 
 	p := tea.NewProgram(m, opts...)
 	if err := p.Start(); err != nil {
-		log.Fatal("Failed to start fm", err)
+		log.Fatal(err)
 		os.Exit(1)
 	}
 }
