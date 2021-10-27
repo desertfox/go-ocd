@@ -8,9 +8,12 @@ import (
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 
+	case selectNamespaceKindMsg:
+		m.lookupNamespaceKind(string(msg))
+		m.leftPane.SetContent(m.list.View())
 	case selectNamespaceMsg:
-		//call api service
-		m.leftPane.SetContent(string(msg))
+		m.lookupNamespace()
+		m.leftPane.SetContent(m.list.View())
 
 	case tea.WindowSizeMsg:
 		m.leftPane.SetSize(msg.Width/2, msg.Height)
