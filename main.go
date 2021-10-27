@@ -5,7 +5,7 @@ import (
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
-	ui "github.com/go-ocd/pkg"
+	"github.com/go-ocd/pkg/ui"
 )
 
 func main() {
