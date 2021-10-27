@@ -1,45 +1,20 @@
 package ui
 
 import (
-	"fmt"
-
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/go-ocd/pkg/list"
 )
 
-type selectNamespaceKindMsg string
+type setNamespaceMsg string
+type setDefaultKindMsg bool
 
-type selectNamespaceMsg bool
-
-func (m Model) selectNamespaceKindCmd(namespace string) tea.Cmd {
+func (m Model) setNamespaceCmd(namespace string) tea.Cmd {
 	return func() tea.Msg {
-		return selectNamespaceKindMsg(namespace)
+		return setNamespaceMsg(namespace)
 	}
 }
 
-func (m Model) selectNamespaceCmd() tea.Cmd {
+func (m Model) setDefaultKindCmd() tea.Cmd {
 	return func() tea.Msg {
-		return selectNamespaceMsg(true)
+		return setDefaultKindMsg(true)
 	}
-}
-
-func (m *Model) lookupNamespaceKind(namespace string) {
-	//api call to get arbitrary kinds
-	kind := make(map[string][]string)
-
-	kind["BuildConfig"] = append(kind["BuildConfig"], "bcname1")
-	kind["BuildConfig"] = append(kind["BuildConfig"], "bcname2")
-	kind["ImageStream"] = append(kind["ImageStream"], "isname1")
-	kind["ImageStream"] = append(kind["ImageStream"], "isname2")
-
-	m.list = list.NewModel(kind)
-	fmt.Printf("%#v\n", m.list)
-}
-
-func (m *Model) lookupNamespace() {
-	kind := make(map[string][]string, 1)
-
-	kind["Project"] = append(kind["Project"], "projectname2")
-
-	m.list = list.NewModel(kind)
 }

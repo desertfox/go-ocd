@@ -16,9 +16,9 @@ func (m Model) Init() tea.Cmd {
 
 	switch {
 	case namespace != "":
-		cmds = append(cmds, m.selectNamespaceKindCmd(namespace))
+		cmds = append(cmds, m.setNamespaceCmd(namespace), m.setDefaultKindCmd())
 	default:
-		cmds = append(cmds, m.selectNamespaceCmd())
+		//cmds = append(cmds, m.selectNamespaceCmd())
 	}
 
 	return tea.Batch(cmds...)
