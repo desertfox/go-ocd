@@ -14,14 +14,14 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.SetKind("namespace")
 
 		m.BuildNamespacesList()
-		m.leftPane.SetContent(m.list.View())
+		m.BuildLeftPane()
 
 	case setNamespaceMsg:
 		m.SetNamespace(string(msg))
 		m.SetKind("kinds")
 
-		m.BuildKindsForNamespace()
-		m.leftPane.SetContent(m.list.View())
+		m.BuildKindsList()
+		m.BuildLeftPane()
 
 	case tea.WindowSizeMsg:
 		m.topPane.SetSize(msg.Width, 4)
@@ -43,11 +43,12 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case key.Matches(msg, key.NewBinding(key.WithKeys("down"), key.WithHelp("↓", "Scroll down"))):
 			m.list.CursorDown()
-			m.leftPane.SetContent(m.list.View())
+			m.BuildLeftPane()
 
 		case key.Matches(msg, key.NewBinding(key.WithKeys("enter"), key.WithHelp("enter", "Select"))):
-			m.SelectView()
-			m.leftPane.SetContent(m.list.View())
+			m.handleEnterKey()
+			m.BuildLeftPane()
+			m.BuildRightPane()
 		}
 	}
 

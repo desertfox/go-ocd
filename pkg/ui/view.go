@@ -28,28 +28,25 @@ func (m *Model) BuildNamespacesList() {
 	m.list.AddItems(m.GetNamespaces())
 }
 
-func (m *Model) BuildKindsForNamespace() {
+func (m *Model) BuildKindsList() {
 	var defaultKinds = []string{"BuildConfig", "ImageStream", "DeploymentConfig"}
 
 	m.list = list.NewModel("kinds")
 	m.list.AddItems(defaultKinds)
 }
 
-func (m *Model) SelectView() {
+func (m *Model) handleEnterKey() {
 	m.SetKindFromList()
 	m.BuildListFromKind()
-	m.BuildRightPane()
 }
 
 func (m *Model) SetKindFromList() {
 	switch m.kind {
-
 	case "namespace":
 		m.SetKind("kinds")
+		m.SetNamespace(string(m.list.GetItemAtCursor()))
 	case "kinds":
 		m.SetKind(string(m.list.GetItemAtCursor()))
-	default:
-		//BuildConfig or lower
 	}
 }
 
@@ -58,13 +55,16 @@ func (m *Model) BuildListFromKind() {
 	case "namespace":
 		m.BuildNamespacesList()
 	case "kinds":
-		m.BuildKindsForNamespace()
+		m.BuildKindsList()
 	default:
 		m.list = list.NewModel(string(m.GetKind()))
 		m.list.AddItems(m.GetBuildConfig())
 	}
 }
 
+func (m *Model) BuildLeftPane() {
+	m.leftPane.SetContent(m.list.View())
+}
 func (m *Model) BuildRightPane() {
 	if m.kind == "namespace" || m.kind == "kinds" {
 		m.rightPane.SetContent(fmt.Sprintf("Please select %s", m.kind))
