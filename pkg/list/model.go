@@ -34,9 +34,15 @@ func (m *Model) SetDefaultKind() {
 
 func (m Model) View() string {
 	output := ""
-
 	output += fmt.Sprintf("Namespace:%s\n", m.namespace)
-	output += fmt.Sprintf("Kind:%s\n", m.kind)
+
+	var tempKind string
+	if m.kind == "" {
+		tempKind = m.resources[m.GetCursor()]
+	} else {
+		tempKind = m.kind
+	}
+	output += fmt.Sprintf("Kind:%s\n", tempKind)
 
 	for i, resource := range m.resources {
 		if m.cursor == i {
@@ -47,24 +53,4 @@ func (m Model) View() string {
 	}
 
 	return output
-}
-
-func (m *Model) CursorUp() {
-	if m.cursor > 0 {
-		m.cursor--
-	}
-}
-
-func (m *Model) CursorDown() {
-	if m.cursor < len(m.resources)-1 {
-		m.cursor++
-	}
-}
-
-func (m *Model) CursorReset() {
-	m.cursor = 0
-}
-
-func (m *Model) GetCursor() int {
-	return m.cursor
 }
