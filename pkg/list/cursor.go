@@ -7,7 +7,7 @@ func (m *Model) CursorUp() {
 }
 
 func (m *Model) CursorDown() {
-	if m.cursor < len(m.resources)-1 {
+	if m.cursor < len(m.items)-1 {
 		m.cursor++
 	}
 }

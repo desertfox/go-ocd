@@ -5,7 +5,7 @@ import (
 )
 
 type setNamespaceMsg string
-type setDefaultKindMsg bool
+type getNamespacesMsg string
 
 func (m Model) setNamespaceCmd(namespace string) tea.Cmd {
 	return func() tea.Msg {
@@ -13,8 +13,8 @@ func (m Model) setNamespaceCmd(namespace string) tea.Cmd {
 	}
 }
 
-func (m Model) setDefaultKindCmd() tea.Cmd {
+func (m Model) getNamespacesCmd() tea.Cmd {
 	return func() tea.Msg {
-		return setDefaultKindMsg(true)
+		return getNamespacesMsg("")
 	}
 }

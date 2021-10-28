@@ -8,17 +8,25 @@ import (
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 
-	case setDefaultKindMsg:
-		m.list.SetDefaultKind()
+	//If no namespace passed at cli
+	case getNamespacesMsg:
+		m.SetNamespace("")
+		m.SetKind("namespace")
+
+		m.BuildNamespacesList()
 		m.leftPane.SetContent(m.list.View())
 
 	case setNamespaceMsg:
-		m.list.SetNamespace(string(msg))
+		m.SetNamespace(string(msg))
+		m.SetKind("kinds")
+
+		m.BuildKindsForNamespace()
 		m.leftPane.SetContent(m.list.View())
 
 	case tea.WindowSizeMsg:
-		m.leftPane.SetSize(msg.Width/2, msg.Height)
-		m.rightPane.SetSize(msg.Width/2, msg.Height)
+		m.topPane.SetSize(msg.Width, 4)
+		m.leftPane.SetSize(msg.Width/2, msg.Height-4)
+		m.rightPane.SetSize(msg.Width/2, msg.Height-4)
 
 		if !m.ready {
 			m.ready = true
@@ -37,6 +45,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.list.CursorDown()
 			m.leftPane.SetContent(m.list.View())
 
+		case key.Matches(msg, key.NewBinding(key.WithKeys("enter"), key.WithHelp("enter", "Select"))):
+			m.SelectView()
+			m.leftPane.SetContent(m.list.View())
 		}
 	}
 

@@ -5,20 +5,49 @@ import (
 	"github.com/go-ocd/pkg/pane"
 )
 
+type kind string
+type namespace string
+
 type Model struct {
+	topPane   pane.Model
 	leftPane  pane.Model
 	rightPane pane.Model
 	list      list.Model
-	ready     bool
+
+	namespace namespace
+	kind      kind
+
+	ready bool
 }
 
 func NewModel() Model {
 	m := Model{}
 
+	m.topPane = pane.NewModel()
 	m.leftPane = pane.NewModel()
 	m.rightPane = pane.NewModel()
-
 	m.ready = false
 
 	return m
+}
+
+func (m *Model) SetNamespace(n string) {
+	m.namespace = namespace(n)
+	m.topPane.SetContent(string(m.namespace))
+}
+
+func (m *Model) SetKind(k string) {
+	m.kind = kind(k)
+}
+
+func (m *Model) GetKind() kind {
+	return m.kind
+}
+
+func (m Model) GetNamespaces() []string {
+	return []string{"namespace1", "namespace2"}
+}
+
+func (m Model) GetBuildConfig() []string {
+	return []string{"bc1", "bc2"}
 }

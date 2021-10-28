@@ -2,53 +2,37 @@ package list
 
 import "fmt"
 
-var defaultKinds = []string{"BuildConfig", "ImageStream", "DeploymentConfig"}
-
 type Model struct {
-	cursor    int
-	kind      string
-	namespace string
-	resources []string
+	cursor int
+	kind   string
+	items  []item
 }
 
-func NewModel() Model {
-	return Model{0, "", "", defaultKinds}
+func NewModel(kind string) Model {
+	return Model{0, kind, []item{}}
 }
 
-func (m *Model) SetNamespace(namespace string) {
-	m.namespace = namespace
+func (m *Model) GetItemAtCursor() item {
+	return m.items[m.cursor]
 }
 
-func (m *Model) SetKind(kind string) {
-	m.kind = kind
-}
-
-func (m *Model) SetResources(resources []string) {
-	m.resources = resources
-}
-
-func (m *Model) SetDefaultKind() {
-	m.SetKind("")
-	m.resources = defaultKinds
+func (m *Model) AddItems(items []string) {
+	var newItems []item
+	for _, i := range items {
+		newItems = append(newItems, newItem(i))
+	}
+	m.items = newItems
 }
 
 func (m Model) View() string {
 	output := ""
-	output += fmt.Sprintf("Namespace:%s\n", m.namespace)
+	output += fmt.Sprintf("Kind: %s\n", m.kind)
 
-	var tempKind string
-	if m.kind == "" {
-		tempKind = m.resources[m.GetCursor()]
-	} else {
-		tempKind = m.kind
-	}
-	output += fmt.Sprintf("Kind:%s\n", tempKind)
-
-	for i, resource := range m.resources {
+	for i, name := range m.items {
 		if m.cursor == i {
-			output += fmt.Sprintf("[x] %s\n", resource)
+			output += fmt.Sprintf("[x] %s\n", name)
 		} else {
-			output += fmt.Sprintf("[ ] %s\n", resource)
+			output += fmt.Sprintf("[ ] %s\n", name)
 		}
 	}
 
