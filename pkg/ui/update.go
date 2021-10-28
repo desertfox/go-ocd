@@ -8,20 +8,14 @@ import (
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 
-	//If no namespace passed at cli
-	case getNamespacesMsg:
-		m.SetNamespace("")
-		m.SetKind("namespace")
+	case buildPaneMsg:
+		return m.BuildPane(msg)
 
-		m.BuildNamespacesList()
-		m.BuildLeftPane()
+	case getNamespacesMsg:
+		return m.BuildNamespacesList()
 
 	case setNamespaceMsg:
-		m.SetNamespace(string(msg))
-		m.SetKind("kinds")
-
-		m.BuildKindsList()
-		m.BuildLeftPane()
+		return m.SetNamespaceAndBuildKindsList(msg)
 
 	case tea.WindowSizeMsg:
 		m.topPane.SetSize(msg.Width, 4)
@@ -31,6 +25,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		if !m.ready {
 			m.ready = true
 		}
+		return m, nil
 	case tea.KeyMsg:
 		switch {
 

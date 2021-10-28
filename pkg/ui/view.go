@@ -3,6 +3,7 @@ package ui
 import (
 	"fmt"
 
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/go-ocd/pkg/list"
 )
@@ -23,16 +24,36 @@ func (m Model) View() string {
 	)
 }
 
-func (m *Model) BuildNamespacesList() {
+func (m *Model) BuildNamespacesList() (tea.Model, tea.Cmd) {
+	m.SetNamespace("")
+	m.SetKind("namespace")
 	m.list = list.NewModel("namespace")
 	m.list.AddItems(m.GetNamespaces())
+	return m, m.buildPaneCmd("left")
 }
 
-func (m *Model) BuildKindsList() {
+func (m *Model) BuildPane(pane buildPaneMsg) (tea.Model, tea.Cmd) {
+	switch pane {
+	case "left":
+		m.BuildLeftPane()
+	case "right":
+		m.BuildRightPane()
+	}
+	return m, nil
+}
+
+func (m *Model) SetNamespaceAndBuildKindsList(namespace setNamespaceMsg) (tea.Model, tea.Cmd) {
 	var defaultKinds = []string{"BuildConfig", "ImageStream", "DeploymentConfig"}
+
+	if namespace != "" {
+		m.SetNamespace(string(namespace))
+	}
+	m.SetKind("kinds")
 
 	m.list = list.NewModel("kinds")
 	m.list.AddItems(defaultKinds)
+
+	return m, m.buildPaneCmd("left")
 }
 
 func (m *Model) handleEnterKey() {
@@ -55,7 +76,7 @@ func (m *Model) BuildListFromKind() {
 	case "namespace":
 		m.BuildNamespacesList()
 	case "kinds":
-		m.BuildKindsList()
+		m.SetNamespaceAndBuildKindsList("")
 	default:
 		m.list = list.NewModel(string(m.GetKind()))
 		m.list.AddItems(m.GetBuildConfig())
