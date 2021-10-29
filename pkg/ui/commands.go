@@ -6,8 +6,7 @@ import (
 
 type setNamespaceMsg string
 type getNamespacesMsg string
-
-type buildPaneMsg string
+type setKindMsg string
 
 func (m Model) setNamespaceCmd(namespace string) tea.Cmd {
 	return func() tea.Msg {
@@ -21,8 +20,8 @@ func (m Model) getNamespacesCmd() tea.Cmd {
 	}
 }
 
-func (m Model) buildPaneCmd(pane string) tea.Cmd {
+func (m Model) setKindCmd(kind string) tea.Cmd {
 	return func() tea.Msg {
-		return buildPaneMsg(pane)
+		return setKindMsg(kind)
 	}
 }

@@ -26,18 +26,18 @@ func NewModel() Model {
 	m.topPane = pane.NewModel()
 	m.leftPane = pane.NewModel()
 	m.rightPane = pane.NewModel()
+
 	m.ready = false
 
 	return m
 }
 
-func (m *Model) SetNamespace(n string) {
-	m.namespace = namespace(n)
-	m.topPane.SetContent(string(m.namespace))
+func (m *Model) SetNamespace(n namespace) {
+	m.namespace = n
 }
 
-func (m *Model) SetKind(k string) {
-	m.kind = kind(k)
+func (m *Model) SetKind(k kind) {
+	m.kind = k
 }
 
 func (m *Model) GetKind() kind {

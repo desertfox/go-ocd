@@ -1,27 +1,20 @@
 package list
 
-import "fmt"
+import (
+	"fmt"
+
+	"github.com/charmbracelet/lipgloss"
+)
 
 type Model struct {
-	cursor int
-	kind   string
-	items  []item
+	cursor    int
+	kind      string
+	kindStyle lipgloss.Style
+	items     []item
 }
 
 func NewModel(kind string) Model {
-	return Model{0, kind, []item{}}
-}
-
-func (m *Model) GetItemAtCursor() item {
-	return m.items[m.cursor]
-}
-
-func (m *Model) AddItems(items []string) {
-	var newItems []item
-	for _, i := range items {
-		newItems = append(newItems, newItem(i))
-	}
-	m.items = newItems
+	return Model{0, kind, lipgloss.NewStyle(), []item{}}
 }
 
 func (m Model) View() string {

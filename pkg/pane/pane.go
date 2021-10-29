@@ -12,7 +12,14 @@ type Model struct {
 
 func NewModel() Model {
 	m := Model{}
+
 	m.SetContent("")
+
+	m.style = lipgloss.NewStyle().
+		PaddingLeft(1).
+		PaddingRight(1).
+		Border(lipgloss.NormalBorder())
+
 	return m
 }
 
@@ -21,12 +28,6 @@ func (m *Model) SetContent(content string) {
 }
 
 func (m *Model) SetSize(width, height int) {
-	border := lipgloss.NormalBorder()
-
-	m.style = lipgloss.NewStyle().
-		PaddingLeft(1).
-		PaddingRight(1).
-		Border(border)
 
 	m.viewport.Width = width - m.style.GetHorizontalBorderSize()
 	m.viewport.Height = height - m.style.GetVerticalBorderSize()
