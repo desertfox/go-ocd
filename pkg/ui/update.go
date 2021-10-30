@@ -10,6 +10,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch msg := msg.(type) {
 
+	case buildPaneMsg:
+		return m.buildPane(msg)
+
 	case getNamespacesMsg:
 		return m.handleGetNamespacesMsg(msg)
 

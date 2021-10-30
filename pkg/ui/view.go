@@ -3,6 +3,7 @@ package ui
 import (
 	"fmt"
 
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -20,6 +21,18 @@ func (m Model) View() string {
 			m.rightPane.View(),
 		),
 	)
+}
+
+func (m *Model) buildPane(p buildPaneMsg) (tea.Model, tea.Cmd) {
+	switch p {
+	case "left":
+		m.buildLeftPane()
+	case "right":
+		m.buildRightPane()
+	case "top":
+		m.buildTopPane()
+	}
+	return m, nil
 }
 
 func (m *Model) buildTopPane() {

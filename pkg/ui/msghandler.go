@@ -25,41 +25,25 @@ func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (tea.Model, tea.Cmd) 
 
 func (m *Model) handleGetNamespacesMsg(msg getNamespacesMsg) (tea.Model, tea.Cmd) {
 	m.SetNamespace(namespace(msg))
-	m.buildTopPane()
-
 	m.SetKind(kind("namespace"))
 	m.list = list.NewModel("namespace")
 	m.list.AddItems(m.GetNamespaces())
-	m.buildLeftPane()
-
-	m.buildRightPane()
-
-	return m, nil
+	return m, m.batchAllPanes()
 }
 
 func (m *Model) handleSetNamespaceMsg(msg setNamespaceMsg) (tea.Model, tea.Cmd) {
 	m.SetNamespace(namespace(msg))
-	m.buildTopPane()
-
 	m.SetKind(kind("kinds"))
 	m.list = list.NewModel("kinds")
 	m.list.AddItems([]string{"BuildConfig", "ImageStream", "DeploymentConfig"})
-	m.buildLeftPane()
-
-	m.buildRightPane()
-
-	return m, nil
+	return m, m.batchAllPanes()
 }
 
 func (m *Model) handleSetKindMsg(msg setKindMsg) (tea.Model, tea.Cmd) {
 	m.SetKind(kind(msg))
 	m.list = list.NewModel(string(m.kind))
 	m.list.AddItems(m.GetBuildConfig())
-	m.buildLeftPane()
-
-	m.buildRightPane()
-
-	return m, nil
+	return m, m.batchAllPanes()
 }
 
 func (m *Model) handleEnterKey() (tea.Model, tea.Cmd) {
@@ -70,20 +54,16 @@ func (m *Model) handleEnterKey() (tea.Model, tea.Cmd) {
 		return m, m.setKindCmd(m.list.GetItemAtCursor())
 	default:
 		m.SetKind(kind(m.list.GetItemAtCursor()))
-		m.buildLeftPane()
-		m.buildRightPane()
+		return m, m.batchAllPanes()
 	}
-	return m, nil
 }
 
 func (m *Model) handleCursorUp() (tea.Model, tea.Cmd) {
 	m.list.CursorUp()
-	m.buildLeftPane()
-	return m, nil
+	return m, m.buildPaneCmd("left")
 }
 
 func (m *Model) handleCursorDown() (tea.Model, tea.Cmd) {
 	m.list.CursorDown()
-	m.buildLeftPane()
-	return m, nil
+	return m, m.buildPaneCmd("left")
 }
