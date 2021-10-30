@@ -15,7 +15,10 @@ type Model struct {
 	leftPane  pane.Model
 	rightPane pane.Model
 	list      list.Model
+
 	help      help.Model
+	helpStyle lipgloss.Style
+
 	namespace namespace
 	kind      kind
 	keys      keyMap
@@ -32,6 +35,7 @@ func NewModel() Model {
 	m.rightPane = pane.NewModel(style.Copy())
 
 	m.help = help.NewModel()
+	m.helpStyle = lipgloss.NewStyle()
 
 	m.keys = keys
 

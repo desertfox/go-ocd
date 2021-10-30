@@ -14,6 +14,8 @@ func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (tea.Model, tea.Cmd) 
 
 	m.help.Width = msg.Width/2 - 10
 
+	m.buildRightPane()
+
 	if !m.ready {
 		m.ready = true
 	}
@@ -24,10 +26,13 @@ func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (tea.Model, tea.Cmd) 
 func (m *Model) handleGetNamespacesMsg(msg getNamespacesMsg) (tea.Model, tea.Cmd) {
 	m.SetNamespace(namespace(msg))
 	m.buildTopPane()
+
 	m.SetKind(kind("namespace"))
 	m.list = list.NewModel("namespace")
 	m.list.AddItems(m.GetNamespaces())
 	m.buildLeftPane()
+
+	m.buildRightPane()
 
 	return m, nil
 }
@@ -35,10 +40,12 @@ func (m *Model) handleGetNamespacesMsg(msg getNamespacesMsg) (tea.Model, tea.Cmd
 func (m *Model) handleSetNamespaceMsg(msg setNamespaceMsg) (tea.Model, tea.Cmd) {
 	m.SetNamespace(namespace(msg))
 	m.buildTopPane()
+
 	m.SetKind(kind("kinds"))
 	m.list = list.NewModel("kinds")
 	m.list.AddItems([]string{"BuildConfig", "ImageStream", "DeploymentConfig"})
 	m.buildLeftPane()
+
 	m.buildRightPane()
 
 	return m, nil
@@ -49,6 +56,7 @@ func (m *Model) handleSetKindMsg(msg setKindMsg) (tea.Model, tea.Cmd) {
 	m.list = list.NewModel(string(m.kind))
 	m.list.AddItems(m.GetBuildConfig())
 	m.buildLeftPane()
+
 	m.buildRightPane()
 
 	return m, nil

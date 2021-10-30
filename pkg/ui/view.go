@@ -23,7 +23,8 @@ func (m Model) View() string {
 }
 
 func (m *Model) buildTopPane() {
-	m.topPane.SetContent(fmt.Sprintf("Namespace: %s\n", m.namespace))
+	msg := fmt.Sprintf("Namespace: %s\n", m.namespace)
+	m.topPane.SetContent(msg)
 }
 
 func (m *Model) buildLeftPane() {
@@ -32,6 +33,10 @@ func (m *Model) buildLeftPane() {
 
 func (m *Model) buildRightPane() {
 	preview := fmt.Sprintf("Please select %s\n", m.kind)
-	help := lipgloss.NewStyle().Render(fmt.Sprintf("%s\n", m.help.View(m.keys)))
-	m.rightPane.SetContent(preview + help)
+
+	help := fmt.Sprintf("%s\n", m.help.View(m.keys))
+
+	m.helpStyle = m.helpStyle.PaddingTop(m.rightPane.Height() - lipgloss.Height(help)).PaddingLeft(m.rightPane.Width() - lipgloss.Width(help))
+
+	m.rightPane.SetContent(preview + m.helpStyle.Render(help))
 }

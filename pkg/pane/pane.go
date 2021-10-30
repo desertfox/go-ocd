@@ -28,6 +28,10 @@ func (m *Model) Width() int {
 	return m.viewport.Width
 }
 
+func (m *Model) Height() int {
+	return m.viewport.Height
+}
+
 func (m *Model) SetSize(width, height int) {
 
 	m.viewport.Width = width - m.style.GetHorizontalBorderSize()
