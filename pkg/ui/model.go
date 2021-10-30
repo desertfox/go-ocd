@@ -1,6 +1,7 @@
 package ui
 
 import (
+	"github.com/charmbracelet/bubbles/help"
 	"github.com/go-ocd/pkg/list"
 	"github.com/go-ocd/pkg/pane"
 )
@@ -13,6 +14,7 @@ type Model struct {
 	leftPane  pane.Model
 	rightPane pane.Model
 	list      list.Model
+	help      help.Model
 	namespace namespace
 	kind      kind
 	keys      keyMap
@@ -25,6 +27,8 @@ func NewModel() Model {
 	m.topPane = pane.NewModel()
 	m.leftPane = pane.NewModel()
 	m.rightPane = pane.NewModel()
+
+	m.help = help.NewModel()
 
 	m.keys = keys
 

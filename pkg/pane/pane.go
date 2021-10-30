@@ -27,6 +27,10 @@ func (m *Model) SetContent(content string) {
 	m.viewport.SetContent(content)
 }
 
+func (m *Model) Width() int {
+	return m.viewport.Width
+}
+
 func (m *Model) SetSize(width, height int) {
 
 	m.viewport.Width = width - m.style.GetHorizontalBorderSize()

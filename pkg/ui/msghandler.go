@@ -15,6 +15,8 @@ func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (tea.Model, tea.Cmd) 
 
 	m.rightPane.SetSize(msg.Width/2, msg.Height-3)
 
+	m.help.Width = msg.Width/2 - 10
+
 	if !m.ready {
 		m.ready = true
 	}
@@ -24,7 +26,7 @@ func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (tea.Model, tea.Cmd) 
 
 func (m *Model) handleGetNamespacesMsg(msg getNamespacesMsg) (tea.Model, tea.Cmd) {
 	m.SetNamespace(namespace(msg))
-	m.topPane.SetContent(lipgloss.NewStyle().Foreground(lipgloss.Color("#FFA500")).Render(string(m.namespace)))
+	m.topPane.SetContent(lipgloss.NewStyle().Width(m.topPane.Width()).Align(lipgloss.Center).Foreground(lipgloss.Color("#FFA500")).Render(string(m.namespace)))
 
 	m.SetKind(kind("namespace"))
 	m.list = list.NewModel("namespace")
@@ -36,7 +38,7 @@ func (m *Model) handleGetNamespacesMsg(msg getNamespacesMsg) (tea.Model, tea.Cmd
 
 func (m *Model) handleSetNamespaceMsg(msg setNamespaceMsg) (tea.Model, tea.Cmd) {
 	m.SetNamespace(namespace(msg))
-	m.topPane.SetContent(lipgloss.NewStyle().Foreground(lipgloss.Color("#FFA500")).Render(string(m.namespace)))
+	m.topPane.SetContent(lipgloss.NewStyle().Width(m.topPane.Width()).Align(lipgloss.Center).Foreground(lipgloss.Color("#FFA500")).Render(string(m.namespace)))
 
 	m.SetKind(kind("kinds"))
 	var defaultKinds = []string{"BuildConfig", "ImageStream", "DeploymentConfig"}
@@ -44,7 +46,7 @@ func (m *Model) handleSetNamespaceMsg(msg setNamespaceMsg) (tea.Model, tea.Cmd) 
 	m.list.AddItems(defaultKinds)
 	m.leftPane.SetContent(m.list.View())
 
-	m.rightPane.SetContent(fmt.Sprintf("Please select %s", m.kind))
+	m.rightPane.SetContent(fmt.Sprintf("Please select %s\n%s", m.kind, m.help.View(m.keys)))
 
 	return m, nil
 }
@@ -54,8 +56,7 @@ func (m *Model) handleSetKindMsg(msg setKindMsg) (tea.Model, tea.Cmd) {
 	m.list = list.NewModel(string(m.kind))
 	m.list.AddItems(m.GetBuildConfig())
 	m.leftPane.SetContent(m.list.View())
-
-	m.rightPane.SetContent(fmt.Sprintf("Please select %s", m.kind))
+	m.rightPane.SetContent(fmt.Sprintf("Please select %s\n%s", m.kind, m.help.View(m.keys)))
 
 	return m, nil
 }
@@ -69,7 +70,7 @@ func (m *Model) handleEnterKey() (tea.Model, tea.Cmd) {
 	default:
 		m.SetKind(kind(m.list.GetItemAtCursor()))
 		m.leftPane.SetContent(m.list.View())
-		m.rightPane.SetContent(fmt.Sprintf("describe todo %s", m.kind))
+		m.rightPane.SetContent(fmt.Sprintf("describe todo %s\n%s", m.kind, m.help.View(m.keys)))
 	}
 	return m, nil
 }
