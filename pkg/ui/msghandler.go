@@ -4,15 +4,16 @@ import (
 	"fmt"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/go-ocd/pkg/list"
 )
 
 func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (tea.Model, tea.Cmd) {
-	m.topPane.SetSize(msg.Width, 4)
+	m.topPane.SetSize(msg.Width, 3)
 
-	m.leftPane.SetSize(msg.Width/2, msg.Height-4)
+	m.leftPane.SetSize(msg.Width/2, msg.Height-3)
 
-	m.rightPane.SetSize(msg.Width/2, msg.Height-4)
+	m.rightPane.SetSize(msg.Width/2, msg.Height-3)
 
 	if !m.ready {
 		m.ready = true
@@ -23,7 +24,7 @@ func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (tea.Model, tea.Cmd) 
 
 func (m *Model) handleGetNamespacesMsg(msg getNamespacesMsg) (tea.Model, tea.Cmd) {
 	m.SetNamespace(namespace(msg))
-	m.topPane.SetContent(string(m.namespace))
+	m.topPane.SetContent(lipgloss.NewStyle().Foreground(lipgloss.Color("#FFA500")).Render(string(m.namespace)))
 
 	m.SetKind(kind("namespace"))
 	m.list = list.NewModel("namespace")
@@ -35,7 +36,7 @@ func (m *Model) handleGetNamespacesMsg(msg getNamespacesMsg) (tea.Model, tea.Cmd
 
 func (m *Model) handleSetNamespaceMsg(msg setNamespaceMsg) (tea.Model, tea.Cmd) {
 	m.SetNamespace(namespace(msg))
-	m.topPane.SetContent(string(m.namespace))
+	m.topPane.SetContent(lipgloss.NewStyle().Foreground(lipgloss.Color("#FFA500")).Render(string(m.namespace)))
 
 	m.SetKind(kind("kinds"))
 	var defaultKinds = []string{"BuildConfig", "ImageStream", "DeploymentConfig"}

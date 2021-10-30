@@ -13,11 +13,10 @@ type Model struct {
 	leftPane  pane.Model
 	rightPane pane.Model
 	list      list.Model
-
 	namespace namespace
 	kind      kind
-
-	ready bool
+	keys      keyMap
+	ready     bool
 }
 
 func NewModel() Model {
@@ -26,6 +25,8 @@ func NewModel() Model {
 	m.topPane = pane.NewModel()
 	m.leftPane = pane.NewModel()
 	m.rightPane = pane.NewModel()
+
+	m.keys = keys
 
 	m.ready = false
 

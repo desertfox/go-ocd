@@ -25,16 +25,16 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch {
 
-		case key.Matches(msg, key.NewBinding(key.WithKeys("ctrl+c"), key.WithHelp("ctrl+c", "exit"))):
+		case key.Matches(msg, m.keys.Quit):
 			return m, tea.Quit
 
-		case key.Matches(msg, key.NewBinding(key.WithKeys("up"), key.WithHelp("↑", "Scroll up"))):
+		case key.Matches(msg, m.keys.Up):
 			return m.handleCursorUp()
 
-		case key.Matches(msg, key.NewBinding(key.WithKeys("down"), key.WithHelp("↓", "Scroll down"))):
+		case key.Matches(msg, m.keys.Down):
 			return m.handleCursorDown()
 
-		case key.Matches(msg, key.NewBinding(key.WithKeys("enter"), key.WithHelp("enter", "Select"))):
+		case key.Matches(msg, m.keys.Enter):
 			return m.handleEnterKey()
 		}
 	}
