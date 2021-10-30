@@ -2,6 +2,7 @@ package ui
 
 import (
 	"github.com/charmbracelet/bubbles/help"
+	"github.com/charmbracelet/lipgloss"
 	"github.com/go-ocd/pkg/list"
 	"github.com/go-ocd/pkg/pane"
 )
@@ -24,9 +25,11 @@ type Model struct {
 func NewModel() Model {
 	m := Model{}
 
-	m.topPane = pane.NewModel()
-	m.leftPane = pane.NewModel()
-	m.rightPane = pane.NewModel()
+	style := lipgloss.NewStyle()
+
+	m.topPane = pane.NewModel(style.Copy())
+	m.leftPane = pane.NewModel(style.Copy())
+	m.rightPane = pane.NewModel(style.Copy())
 
 	m.help = help.NewModel()
 

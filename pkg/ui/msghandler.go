@@ -26,7 +26,7 @@ func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (tea.Model, tea.Cmd) 
 
 func (m *Model) handleGetNamespacesMsg(msg getNamespacesMsg) (tea.Model, tea.Cmd) {
 	m.SetNamespace(namespace(msg))
-	m.topPane.SetContent(lipgloss.NewStyle().Width(m.topPane.Width()).Align(lipgloss.Center).Foreground(lipgloss.Color("#FFA500")).Render(string(m.namespace)))
+	m.topPane.SetContent(string(m.namespace))
 
 	m.SetKind(kind("namespace"))
 	m.list = list.NewModel("namespace")
@@ -38,7 +38,7 @@ func (m *Model) handleGetNamespacesMsg(msg getNamespacesMsg) (tea.Model, tea.Cmd
 
 func (m *Model) handleSetNamespaceMsg(msg setNamespaceMsg) (tea.Model, tea.Cmd) {
 	m.SetNamespace(namespace(msg))
-	m.topPane.SetContent(lipgloss.NewStyle().Width(m.topPane.Width()).Align(lipgloss.Center).Foreground(lipgloss.Color("#FFA500")).Render(string(m.namespace)))
+	m.topPane.SetContent(string(m.namespace))
 
 	m.SetKind(kind("kinds"))
 	var defaultKinds = []string{"BuildConfig", "ImageStream", "DeploymentConfig"}
@@ -46,7 +46,9 @@ func (m *Model) handleSetNamespaceMsg(msg setNamespaceMsg) (tea.Model, tea.Cmd) 
 	m.list.AddItems(defaultKinds)
 	m.leftPane.SetContent(m.list.View())
 
-	m.rightPane.SetContent(fmt.Sprintf("Please select %s\n%s", m.kind, m.help.View(m.keys)))
+	preview := fmt.Sprintf("Please select %s\n", m.kind)
+	help := lipgloss.NewStyle().Render(fmt.Sprintf("%s\n", m.help.View(m.keys)))
+	m.rightPane.SetContent(preview + help)
 
 	return m, nil
 }
@@ -56,7 +58,10 @@ func (m *Model) handleSetKindMsg(msg setKindMsg) (tea.Model, tea.Cmd) {
 	m.list = list.NewModel(string(m.kind))
 	m.list.AddItems(m.GetBuildConfig())
 	m.leftPane.SetContent(m.list.View())
-	m.rightPane.SetContent(fmt.Sprintf("Please select %s\n%s", m.kind, m.help.View(m.keys)))
+
+	preview := fmt.Sprintf("Please select %s\n", m.kind)
+	help := lipgloss.NewStyle().Render(fmt.Sprintf("%s\n", m.help.View(m.keys)))
+	m.rightPane.SetContent(preview + help)
 
 	return m, nil
 }
@@ -70,7 +75,10 @@ func (m *Model) handleEnterKey() (tea.Model, tea.Cmd) {
 	default:
 		m.SetKind(kind(m.list.GetItemAtCursor()))
 		m.leftPane.SetContent(m.list.View())
-		m.rightPane.SetContent(fmt.Sprintf("describe todo %s\n%s", m.kind, m.help.View(m.keys)))
+
+		preview := fmt.Sprintf("describe todo %s\n", m.kind)
+		help := lipgloss.NewStyle().Render(fmt.Sprintf("%s\n", m.help.View(m.keys)))
+		m.rightPane.SetContent(preview + help)
 	}
 	return m, nil
 }

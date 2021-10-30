@@ -10,15 +10,12 @@ type Model struct {
 	style    lipgloss.Style
 }
 
-func NewModel() Model {
+func NewModel(s lipgloss.Style) Model {
 	m := Model{}
 
 	m.SetContent("")
 
-	m.style = lipgloss.NewStyle().
-		PaddingLeft(1).
-		PaddingRight(1).
-		Border(lipgloss.NormalBorder())
+	m.style = s
 
 	return m
 }
@@ -38,12 +35,7 @@ func (m *Model) SetSize(width, height int) {
 }
 
 func (m Model) View() string {
-	border := lipgloss.NormalBorder()
-
 	return m.style.Copy().
-		PaddingLeft(1).
-		PaddingRight(1).
-		Border(border).
 		Width(m.viewport.Width).
 		Render(m.viewport.View())
 }

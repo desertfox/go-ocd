@@ -39,7 +39,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case key.Matches(msg, m.keys.Enter):
 			return m.handleEnterKey()
+
+		case key.Matches(msg, m.keys.Delete):
+			return m, nil
 		}
+
 	}
 
 	return m, tea.Batch(cmds...)
