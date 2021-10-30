@@ -1,10 +1,7 @@
 package ui
 
 import (
-	"fmt"
-
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/charmbracelet/lipgloss"
 	"github.com/go-ocd/pkg/list"
 )
 
@@ -26,29 +23,23 @@ func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (tea.Model, tea.Cmd) 
 
 func (m *Model) handleGetNamespacesMsg(msg getNamespacesMsg) (tea.Model, tea.Cmd) {
 	m.SetNamespace(namespace(msg))
-	m.topPane.SetContent(string(m.namespace))
-
+	m.buildTopPane()
 	m.SetKind(kind("namespace"))
 	m.list = list.NewModel("namespace")
 	m.list.AddItems(m.GetNamespaces())
-	m.leftPane.SetContent(m.list.View())
+	m.buildLeftPane()
 
 	return m, nil
 }
 
 func (m *Model) handleSetNamespaceMsg(msg setNamespaceMsg) (tea.Model, tea.Cmd) {
 	m.SetNamespace(namespace(msg))
-	m.topPane.SetContent(string(m.namespace))
-
+	m.buildTopPane()
 	m.SetKind(kind("kinds"))
-	var defaultKinds = []string{"BuildConfig", "ImageStream", "DeploymentConfig"}
 	m.list = list.NewModel("kinds")
-	m.list.AddItems(defaultKinds)
-	m.leftPane.SetContent(m.list.View())
-
-	preview := fmt.Sprintf("Please select %s\n", m.kind)
-	help := lipgloss.NewStyle().Render(fmt.Sprintf("%s\n", m.help.View(m.keys)))
-	m.rightPane.SetContent(preview + help)
+	m.list.AddItems([]string{"BuildConfig", "ImageStream", "DeploymentConfig"})
+	m.buildLeftPane()
+	m.buildRightPane()
 
 	return m, nil
 }
@@ -57,11 +48,8 @@ func (m *Model) handleSetKindMsg(msg setKindMsg) (tea.Model, tea.Cmd) {
 	m.SetKind(kind(msg))
 	m.list = list.NewModel(string(m.kind))
 	m.list.AddItems(m.GetBuildConfig())
-	m.leftPane.SetContent(m.list.View())
-
-	preview := fmt.Sprintf("Please select %s\n", m.kind)
-	help := lipgloss.NewStyle().Render(fmt.Sprintf("%s\n", m.help.View(m.keys)))
-	m.rightPane.SetContent(preview + help)
+	m.buildLeftPane()
+	m.buildRightPane()
 
 	return m, nil
 }
@@ -74,23 +62,20 @@ func (m *Model) handleEnterKey() (tea.Model, tea.Cmd) {
 		return m, m.setKindCmd(m.list.GetItemAtCursor())
 	default:
 		m.SetKind(kind(m.list.GetItemAtCursor()))
-		m.leftPane.SetContent(m.list.View())
-
-		preview := fmt.Sprintf("describe todo %s\n", m.kind)
-		help := lipgloss.NewStyle().Render(fmt.Sprintf("%s\n", m.help.View(m.keys)))
-		m.rightPane.SetContent(preview + help)
+		m.buildLeftPane()
+		m.buildRightPane()
 	}
 	return m, nil
 }
 
 func (m *Model) handleCursorUp() (tea.Model, tea.Cmd) {
 	m.list.CursorUp()
-	m.leftPane.SetContent(m.list.View())
+	m.buildLeftPane()
 	return m, nil
 }
 
 func (m *Model) handleCursorDown() (tea.Model, tea.Cmd) {
 	m.list.CursorDown()
-	m.leftPane.SetContent(m.list.View())
+	m.buildLeftPane()
 	return m, nil
 }

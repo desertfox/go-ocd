@@ -21,3 +21,17 @@ func (m Model) View() string {
 		),
 	)
 }
+
+func (m *Model) buildTopPane() {
+	m.topPane.SetContent(fmt.Sprintf("Namespace: %s\n", m.namespace))
+}
+
+func (m *Model) buildLeftPane() {
+	m.leftPane.SetContent(m.list.View())
+}
+
+func (m *Model) buildRightPane() {
+	preview := fmt.Sprintf("Please select %s\n", m.kind)
+	help := lipgloss.NewStyle().Render(fmt.Sprintf("%s\n", m.help.View(m.keys)))
+	m.rightPane.SetContent(preview + help)
+}
