@@ -9,7 +9,7 @@ import (
 
 func (m Model) View() string {
 	if !m.ready {
-		return fmt.Sprintf("%s", "loading...")
+		return "loading..."
 	}
 
 	return lipgloss.JoinVertical(
@@ -36,7 +36,7 @@ func (m *Model) buildPane(p buildPaneMsg) (tea.Model, tea.Cmd) {
 }
 
 func (m *Model) buildTopPane() {
-	msg := fmt.Sprintf("Namespace: %s\n", m.namespace)
+	msg := lipgloss.NewStyle().Foreground(lipgloss.Color("10")).Render(fmt.Sprintf("Namespace: %s", m.namespace))
 	m.topPane.SetContent(msg)
 }
 
@@ -45,11 +45,9 @@ func (m *Model) buildLeftPane() {
 }
 
 func (m *Model) buildRightPane() {
-	preview := fmt.Sprintf("Please select %s\n", m.kind)
-
-	help := fmt.Sprintf("%s\n", m.help.View(m.keys))
+	help := m.help.View(m.keys)
 
 	m.helpStyle = m.helpStyle.PaddingTop(m.rightPane.Height() - lipgloss.Height(help)).PaddingLeft(m.rightPane.Width() - lipgloss.Width(help))
 
-	m.rightPane.SetContent(preview + m.helpStyle.Render(help))
+	m.rightPane.SetContent(m.rightPaneContent + m.helpStyle.Render(help))
 }

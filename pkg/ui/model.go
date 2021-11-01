@@ -11,28 +11,28 @@ type kind string
 type namespace string
 
 type Model struct {
-	topPane   pane.Model
+	topPane pane.Model
+
 	leftPane  pane.Model
-	rightPane pane.Model
 	list      list.Model
-
-	help      help.Model
-	helpStyle lipgloss.Style
-
 	namespace namespace
 	kind      kind
-	keys      keyMap
-	ready     bool
+
+	rightPane        pane.Model
+	rightPaneContent string
+	help             help.Model
+	helpStyle        lipgloss.Style
+
+	keys  keyMap
+	ready bool
 }
 
 func NewModel() Model {
 	m := Model{}
 
-	style := lipgloss.NewStyle()
-
-	m.topPane = pane.NewModel(style.Copy())
-	m.leftPane = pane.NewModel(style.Copy())
-	m.rightPane = pane.NewModel(style.Copy())
+	m.topPane = pane.NewModel()
+	m.leftPane = pane.NewModel()
+	m.rightPane = pane.NewModel()
 
 	m.help = help.NewModel()
 	m.helpStyle = lipgloss.NewStyle()
@@ -40,6 +40,9 @@ func NewModel() Model {
 	m.keys = keys
 
 	m.ready = false
+
+	m.namespace = namespace("")
+	m.kind = kind("")
 
 	return m
 }

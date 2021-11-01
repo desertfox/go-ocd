@@ -7,7 +7,6 @@ import (
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	var cmds []tea.Cmd
-
 	switch msg := msg.(type) {
 
 	case buildPaneMsg:
@@ -21,6 +20,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case setKindMsg:
 		return m.handleSetKindMsg(msg)
+
+	case getKindInstanceDescribeMsg:
+		return m.handleGetKindInstanceDescribeMsg(msg)
 
 	case tea.WindowSizeMsg:
 		return m.handleWindowSizeMsg(msg)

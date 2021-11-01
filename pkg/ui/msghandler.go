@@ -1,48 +1,69 @@
 package ui
 
 import (
+	"fmt"
+
 	tea "github.com/charmbracelet/bubbletea"
 	"github.com/go-ocd/pkg/list"
 )
 
 func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (tea.Model, tea.Cmd) {
-	m.topPane.SetSize(msg.Width, 3)
+	m.topPane.SetSize(msg.Width, 1)
 
-	m.leftPane.SetSize(msg.Width/2, msg.Height-3)
+	m.leftPane.SetSize(msg.Width/2, msg.Height-m.topPane.Height())
 
-	m.rightPane.SetSize(msg.Width/2, msg.Height-3)
+	m.rightPane.SetSize(msg.Width/2, msg.Height-m.topPane.Height())
 
 	m.help.Width = msg.Width/2 - 10
-
-	m.buildRightPane()
 
 	if !m.ready {
 		m.ready = true
 	}
 
-	return m, nil
+	return m, m.batchAllPanes()
 }
 
+/*
+- namespace
+- kind
+- $kind
+- instance-of-$kind
+*/
 func (m *Model) handleGetNamespacesMsg(msg getNamespacesMsg) (tea.Model, tea.Cmd) {
-	m.SetNamespace(namespace(msg))
-	m.SetKind(kind("namespace"))
-	m.list = list.NewModel("namespace")
-	m.list.AddItems(m.GetNamespaces())
-	return m, m.batchAllPanes()
+	m.SetNamespace(namespace(""))
+
+	return m, tea.Sequentially(
+		m.setKindCmd("namespace"),
+		m.batchAllPanes(),
+	)
 }
 
 func (m *Model) handleSetNamespaceMsg(msg setNamespaceMsg) (tea.Model, tea.Cmd) {
 	m.SetNamespace(namespace(msg))
-	m.SetKind(kind("kinds"))
-	m.list = list.NewModel("kinds")
-	m.list.AddItems([]string{"BuildConfig", "ImageStream", "DeploymentConfig"})
-	return m, m.batchAllPanes()
+
+	return m, tea.Sequentially(
+		m.setKindCmd("kind"),
+		m.batchAllPanes(),
+	)
 }
 
 func (m *Model) handleSetKindMsg(msg setKindMsg) (tea.Model, tea.Cmd) {
 	m.SetKind(kind(msg))
-	m.list = list.NewModel(string(m.kind))
-	m.list.AddItems(m.GetBuildConfig())
+
+	switch msg {
+	case "namespace":
+		m.list = list.NewModel("namespace")
+		m.list.AddItems(m.GetNamespaces())
+	case "kind":
+		m.list = list.NewModel("kind")
+		m.list.AddItems([]string{"BuildConfig", "ImageStream", "DeploymentConfig"})
+		m.rightPaneContent = fmt.Sprintf("Please select a %s", m.kind)
+	default:
+		m.list = list.NewModel(string(m.kind))
+		m.list.AddItems(m.GetBuildConfig())
+		m.rightPaneContent = fmt.Sprintf("Please select a %s instance", m.kind)
+	}
+
 	return m, m.batchAllPanes()
 }
 
@@ -50,20 +71,24 @@ func (m *Model) handleEnterKey() (tea.Model, tea.Cmd) {
 	switch m.kind {
 	case "namespace":
 		return m, m.setNamespaceCmd(m.list.GetItemAtCursor())
-	case "kinds":
+	case "kind":
 		return m, m.setKindCmd(m.list.GetItemAtCursor())
 	default:
-		m.SetKind(kind(m.list.GetItemAtCursor()))
-		return m, m.batchAllPanes()
+		return m, m.getKindInstanceDescribeCmd(m.list.GetItemAtCursor())
 	}
 }
 
 func (m *Model) handleCursorUp() (tea.Model, tea.Cmd) {
 	m.list.CursorUp()
-	return m, m.buildPaneCmd("left")
+	return m, m.batchAllPanes()
 }
 
 func (m *Model) handleCursorDown() (tea.Model, tea.Cmd) {
 	m.list.CursorDown()
-	return m, m.buildPaneCmd("left")
+	return m, m.batchAllPanes()
+}
+
+func (m *Model) handleGetKindInstanceDescribeMsg(describe getKindInstanceDescribeMsg) (tea.Model, tea.Cmd) {
+	m.rightPaneContent = string(describe)
+	return m, m.batchAllPanes()
 }

@@ -10,12 +10,10 @@ type Model struct {
 	style    lipgloss.Style
 }
 
-func NewModel(s lipgloss.Style) Model {
+func NewModel() Model {
 	m := Model{}
 
 	m.SetContent("")
-
-	m.style = s
 
 	return m
 }
@@ -33,9 +31,12 @@ func (m *Model) Height() int {
 }
 
 func (m *Model) SetSize(width, height int) {
-
 	m.viewport.Width = width - m.style.GetHorizontalBorderSize()
 	m.viewport.Height = height - m.style.GetVerticalBorderSize()
+}
+
+func (m *Model) SetStyle(s lipgloss.Style) {
+	m.style = s
 }
 
 func (m Model) View() string {
