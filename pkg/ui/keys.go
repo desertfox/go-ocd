@@ -11,6 +11,7 @@ type keyMap struct {
 	Delete key.Binding
 	Create key.Binding
 	Edit   key.Binding
+	Back   key.Binding
 }
 
 func (k keyMap) ShortHelp() []key.Binding {
@@ -19,7 +20,7 @@ func (k keyMap) ShortHelp() []key.Binding {
 
 func (k keyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
-		{k.Up, k.Down, k.Enter},
+		{k.Up, k.Down, k.Back, k.Enter},
 		{k.Delete, k.Create, k.Edit, k.Help, k.Quit},
 	}
 }
@@ -41,6 +42,11 @@ var keys = keyMap{
 	Down: key.NewBinding(
 		key.WithKeys("down", "j"),
 		key.WithHelp("↓/j", "move down"),
+	),
+
+	Back: key.NewBinding(
+		key.WithKeys("left", "b"),
+		key.WithHelp("←/b", "go back"),
 	),
 
 	Enter: key.NewBinding(

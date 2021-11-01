@@ -92,3 +92,14 @@ func (m *Model) handleGetKindInstanceDescribeMsg(describe getKindInstanceDescrib
 	m.preview = string(describe)
 	return m, m.batchAllPanes()
 }
+
+func (m *Model) handleGoBack() (tea.Model, tea.Cmd) {
+	switch m.kind {
+	case "namespace":
+		return m, m.getNamespacesCmd()
+	case "kind":
+		return m, m.getNamespacesCmd()
+	default:
+		return m, m.setKindCmd("kind")
+	}
+}
