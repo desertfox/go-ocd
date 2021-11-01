@@ -11,17 +11,17 @@ type kind string
 type namespace string
 
 type Model struct {
-	topPane pane.Model
+	panes map[string]*pane.Model
 
-	leftPane  pane.Model
-	list      list.Model
+	selected string
+	list     list.Model
+	preview  string
+
 	namespace namespace
 	kind      kind
 
-	rightPane        pane.Model
-	rightPaneContent string
-	help             help.Model
-	helpStyle        lipgloss.Style
+	help      help.Model
+	helpStyle lipgloss.Style
 
 	keys  keyMap
 	ready bool
@@ -30,9 +30,9 @@ type Model struct {
 func NewModel() Model {
 	m := Model{}
 
-	m.topPane = pane.NewModel()
-	m.leftPane = pane.NewModel()
-	m.rightPane = pane.NewModel()
+	m.panes = map[string]*pane.Model{"selected": pane.NewModel(), "list": pane.NewModel(), "help": pane.NewModel(), "preview": pane.NewModel()}
+
+	m.selected = ""
 
 	m.help = help.NewModel()
 	m.helpStyle = lipgloss.NewStyle()
@@ -45,18 +45,6 @@ func NewModel() Model {
 	m.kind = kind("")
 
 	return m
-}
-
-func (m *Model) SetNamespace(n namespace) {
-	m.namespace = n
-}
-
-func (m *Model) SetKind(k kind) {
-	m.kind = k
-}
-
-func (m *Model) GetKind() kind {
-	return m.kind
 }
 
 func (m Model) GetNamespaces() []string {

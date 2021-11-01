@@ -8,13 +8,13 @@ import (
 )
 
 func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (tea.Model, tea.Cmd) {
-	m.topPane.SetSize(msg.Width, 1)
+	m.panes["selected"].SetSize(msg.Width/2, 2)
 
-	m.leftPane.SetSize(msg.Width/2, msg.Height-m.topPane.Height())
+	m.panes["list"].SetSize(msg.Width/2, msg.Height-m.panes["selected"].Height()-32)
 
-	m.rightPane.SetSize(msg.Width/2, msg.Height-m.topPane.Height())
+	m.panes["help"].SetSize(msg.Width/2, 30)
 
-	m.help.Width = msg.Width/2 - 10
+	m.panes["preview"].SetSize(msg.Width/2, msg.Height-m.panes["selected"].Height())
 
 	if !m.ready {
 		m.ready = true
@@ -30,7 +30,7 @@ func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (tea.Model, tea.Cmd) 
 - instance-of-$kind
 */
 func (m *Model) handleGetNamespacesMsg(msg getNamespacesMsg) (tea.Model, tea.Cmd) {
-	m.SetNamespace(namespace(""))
+	m.namespace = namespace("")
 
 	return m, tea.Sequentially(
 		m.setKindCmd("namespace"),
@@ -39,7 +39,7 @@ func (m *Model) handleGetNamespacesMsg(msg getNamespacesMsg) (tea.Model, tea.Cmd
 }
 
 func (m *Model) handleSetNamespaceMsg(msg setNamespaceMsg) (tea.Model, tea.Cmd) {
-	m.SetNamespace(namespace(msg))
+	m.namespace = namespace(msg)
 
 	return m, tea.Sequentially(
 		m.setKindCmd("kind"),
@@ -48,7 +48,7 @@ func (m *Model) handleSetNamespaceMsg(msg setNamespaceMsg) (tea.Model, tea.Cmd) 
 }
 
 func (m *Model) handleSetKindMsg(msg setKindMsg) (tea.Model, tea.Cmd) {
-	m.SetKind(kind(msg))
+	m.kind = kind(msg)
 
 	switch msg {
 	case "namespace":
@@ -57,11 +57,11 @@ func (m *Model) handleSetKindMsg(msg setKindMsg) (tea.Model, tea.Cmd) {
 	case "kind":
 		m.list = list.NewModel("kind")
 		m.list.AddItems([]string{"BuildConfig", "ImageStream", "DeploymentConfig"})
-		m.rightPaneContent = fmt.Sprintf("Please select a %s", m.kind)
+		m.preview = fmt.Sprintf("Please select a %s", m.kind)
 	default:
 		m.list = list.NewModel(string(m.kind))
 		m.list.AddItems(m.GetBuildConfig())
-		m.rightPaneContent = fmt.Sprintf("Please select a %s instance", m.kind)
+		m.preview = fmt.Sprintf("Please select a %s instance", m.kind)
 	}
 
 	return m, m.batchAllPanes()
@@ -89,6 +89,6 @@ func (m *Model) handleCursorDown() (tea.Model, tea.Cmd) {
 }
 
 func (m *Model) handleGetKindInstanceDescribeMsg(describe getKindInstanceDescribeMsg) (tea.Model, tea.Cmd) {
-	m.rightPaneContent = string(describe)
+	m.preview = string(describe)
 	return m, m.batchAllPanes()
 }

@@ -10,8 +10,8 @@ type Model struct {
 	style    lipgloss.Style
 }
 
-func NewModel() Model {
-	m := Model{}
+func NewModel() *Model {
+	m := &Model{}
 
 	m.SetContent("")
 

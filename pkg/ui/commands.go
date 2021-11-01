@@ -43,9 +43,10 @@ func (m Model) getKindInstanceDescribeCmd(instance string) tea.Cmd {
 
 func (m Model) batchAllPanes() tea.Cmd {
 	return tea.Batch(
-		m.buildPaneCmd("top"),
-		m.buildPaneCmd("left"),
-		m.buildPaneCmd("right"),
+		m.buildPaneCmd("selected"),
+		m.buildPaneCmd("list"),
+		m.buildPaneCmd("preview"),
+		m.buildPaneCmd("help"),
 	)
 }
 

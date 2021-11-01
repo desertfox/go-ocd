@@ -12,42 +12,30 @@ func (m Model) View() string {
 		return "loading..."
 	}
 
-	return lipgloss.JoinVertical(
+	return lipgloss.JoinHorizontal(
 		lipgloss.Top,
-		m.topPane.View(),
-		lipgloss.JoinHorizontal(
+		lipgloss.JoinVertical(
 			lipgloss.Top,
-			m.leftPane.View(),
-			m.rightPane.View(),
+			m.panes["selected"].View(),
+			m.panes["list"].View(),
+			m.panes["help"].View(),
 		),
+		m.panes["preview"].View(),
 	)
 }
 
 func (m *Model) buildPane(p buildPaneMsg) (tea.Model, tea.Cmd) {
 	switch p {
-	case "left":
-		m.buildLeftPane()
-	case "right":
-		m.buildRightPane()
-	case "top":
-		m.buildTopPane()
+	case "list":
+		m.panes["list"].SetContent(m.list.View())
+	case "preview":
+		m.panes["preview"].SetContent(m.preview)
+	case "selected":
+		msg := lipgloss.NewStyle().Foreground(lipgloss.Color("10")).Render(fmt.Sprintf("Namespace: %s", m.namespace))
+		m.panes["selected"].SetContent(msg)
+	case "help":
+		m.panes["help"].SetContent(m.help.View(m.keys))
 	}
+
 	return m, nil
-}
-
-func (m *Model) buildTopPane() {
-	msg := lipgloss.NewStyle().Foreground(lipgloss.Color("10")).Render(fmt.Sprintf("Namespace: %s", m.namespace))
-	m.topPane.SetContent(msg)
-}
-
-func (m *Model) buildLeftPane() {
-	m.leftPane.SetContent(m.list.View())
-}
-
-func (m *Model) buildRightPane() {
-	help := m.help.View(m.keys)
-
-	m.helpStyle = m.helpStyle.PaddingTop(m.rightPane.Height() - lipgloss.Height(help)).PaddingLeft(m.rightPane.Width() - lipgloss.Width(help))
-
-	m.rightPane.SetContent(m.rightPaneContent + m.helpStyle.Render(help))
 }
