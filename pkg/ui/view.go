@@ -31,7 +31,11 @@ func (m *Model) buildPane(p buildPaneMsg) (tea.Model, tea.Cmd) {
 	case "preview":
 		m.panes["preview"].SetContent(m.preview)
 	case "selected":
-		msg := lipgloss.NewStyle().Foreground(lipgloss.Color("10")).Render(fmt.Sprintf("Namespace: %s", m.namespace))
+		msg := lipgloss.JoinVertical(
+			lipgloss.Top,
+			lipgloss.NewStyle().Foreground(lipgloss.Color("10")).Render(fmt.Sprintf("Namespace: %s", m.namespace)),
+			lipgloss.NewStyle().Foreground(lipgloss.Color("33")).Render(fmt.Sprintf("Kind     : %s", m.kind)),
+		)
 		m.panes["selected"].SetContent(msg)
 	case "help":
 		m.panes["help"].SetContent(m.help.View(m.keys))
