@@ -34,7 +34,7 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, tea.Quit
 
 		case key.Matches(msg, m.keys.Help):
-			m.help.ShowAll = true
+			m.help.ShowAll = !m.help.ShowAll
 			return m, m.buildPaneCmd("help")
 
 		case key.Matches(msg, m.keys.Up):

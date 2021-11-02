@@ -38,7 +38,8 @@ func (m *Model) buildPane(p buildPaneMsg) (tea.Model, tea.Cmd) {
 		)
 		m.panes["selected"].SetContent(msg)
 	case "help":
-		m.panes["help"].SetContent(m.help.View(m.keys))
+		help := m.help.View(m.keys)
+		m.panes["help"].SetContent(help)
 	}
 
 	return m, nil

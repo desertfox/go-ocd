@@ -13,6 +13,7 @@ func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (tea.Model, tea.Cmd) 
 	m.panes["list"].SetSize(msg.Width/2, msg.Height-m.panes["selected"].Height()-32)
 
 	m.panes["help"].SetSize(msg.Width/2, 30)
+	m.help.Width = msg.Width / 2
 
 	m.panes["preview"].SetSize(msg.Width/2, msg.Height-m.panes["selected"].Height())
 
