@@ -15,7 +15,7 @@ func (m Model) View() string {
 	return lipgloss.JoinHorizontal(
 		lipgloss.Top,
 		lipgloss.JoinVertical(
-			lipgloss.Top,
+			lipgloss.Left,
 			m.panes["selected"].View(),
 			m.panes["list"].View(),
 			m.panes["help"].View(),

@@ -10,10 +10,10 @@ type Model struct {
 	style    lipgloss.Style
 }
 
-func NewModel() *Model {
+func NewModel(content string) *Model {
 	m := &Model{}
 
-	m.SetContent("")
+	m.SetContent(content)
 
 	return m
 }
@@ -31,8 +31,12 @@ func (m *Model) Height() int {
 }
 
 func (m *Model) SetSize(width, height int) {
-	m.viewport.Width = width - m.style.GetHorizontalBorderSize()
-	m.viewport.Height = height - m.style.GetVerticalBorderSize()
+	border := lipgloss.NormalBorder()
+	m.style = lipgloss.NewStyle().
+		Border(border)
+
+	m.viewport.Width = width   // - m.style.GetHorizontalBorderSize()
+	m.viewport.Height = height // - m.style.GetVerticalBorderSize()
 }
 
 func (m *Model) SetStyle(s lipgloss.Style) {
@@ -41,6 +45,8 @@ func (m *Model) SetStyle(s lipgloss.Style) {
 
 func (m Model) View() string {
 	return m.style.Copy().
+		BorderForeground(lipgloss.Color("#b8bb26")).
+		Border(lipgloss.NormalBorder()).
 		Width(m.viewport.Width).
 		Render(m.viewport.View())
 }

@@ -9,9 +9,9 @@ func (m Model) View() string {
 
 	for i, name := range m.items {
 		if m.cursor == i {
-			items = append(items, m.selectedStyle.Render(string(name)))
+			items = append(items, m.selectedStyle.Render(string(name)+"\n"))
 		} else {
-			items = append(items, m.style.Render(string(name)))
+			items = append(items, m.style.Render(string(name)+"\n"))
 		}
 	}
 

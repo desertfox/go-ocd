@@ -13,9 +13,8 @@ type namespace string
 type Model struct {
 	panes map[string]*pane.Model
 
-	selected string
-	list     list.Model
-	preview  string
+	list    list.Model
+	preview string
 
 	namespace namespace
 	kind      kind
@@ -30,9 +29,12 @@ type Model struct {
 func NewModel() Model {
 	m := Model{}
 
-	m.panes = map[string]*pane.Model{"selected": pane.NewModel(), "list": pane.NewModel(), "help": pane.NewModel(), "preview": pane.NewModel()}
-
-	m.selected = ""
+	m.panes = map[string]*pane.Model{
+		"selected": pane.NewModel(""),
+		"list":     pane.NewModel(""),
+		"help":     pane.NewModel(""),
+		"preview":  pane.NewModel(""),
+	}
 
 	m.help = help.NewModel()
 	m.helpStyle = lipgloss.NewStyle()
@@ -40,9 +42,6 @@ func NewModel() Model {
 	m.keys = keys
 
 	m.ready = false
-
-	m.namespace = namespace("")
-	m.kind = kind("")
 
 	return m
 }

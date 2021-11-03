@@ -10,18 +10,19 @@ import (
 func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (tea.Model, tea.Cmd) {
 	m.panes["selected"].SetSize(msg.Width/2, 2)
 
-	m.panes["list"].SetSize(msg.Width/2, msg.Height-m.panes["selected"].Height()-32)
+	m.panes["list"].SetSize(msg.Width/2, msg.Height-20)
 
-	m.panes["help"].SetSize(msg.Width/2, 30)
-	m.help.Width = msg.Width / 2
+	m.panes["help"].SetSize(msg.Width/2, 5)
 
-	m.panes["preview"].SetSize(msg.Width/2, msg.Height-m.panes["selected"].Height())
+	m.help.Width = msg.Width
+
+	m.panes["preview"].SetSize(msg.Width/2-10, msg.Height-9)
 
 	if !m.ready {
 		m.ready = true
 	}
 
-	return m, m.batchAllPanes()
+	return m, nil
 }
 
 /*
@@ -33,10 +34,7 @@ func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (tea.Model, tea.Cmd) 
 func (m *Model) handleGetNamespacesMsg(msg getNamespacesMsg) (tea.Model, tea.Cmd) {
 	m.namespace = namespace("")
 
-	return m, tea.Sequentially(
-		m.setKindCmd("namespace"),
-		m.batchAllPanes(),
-	)
+	return m, m.setKindCmd("namespace")
 }
 
 func (m *Model) handleSetNamespaceMsg(msg setNamespaceMsg) (tea.Model, tea.Cmd) {
