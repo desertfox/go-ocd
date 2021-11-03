@@ -6,6 +6,7 @@ import (
 )
 
 func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
+	var cmd tea.Cmd
 	var cmds []tea.Cmd
 
 	switch msg := msg.(type) {
@@ -39,10 +40,14 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m, m.buildPaneCmd("help")
 
 		case key.Matches(msg, m.keys.Up):
-			return m.handleCursorUp()
+			_, cmd = m.handleCursorUp()
+			cmds = append(cmds, cmd)
+			//return m.handleCursorUp()
 
 		case key.Matches(msg, m.keys.Down):
-			return m.handleCursorDown()
+			_, cmd = m.handleCursorDown()
+			cmds = append(cmds, cmd)
+			//return m.handleCursorDown()
 
 		case key.Matches(msg, m.keys.Enter):
 			return m.handleEnterKey()
@@ -53,6 +58,8 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		}
 
 	}
+
+	cmds = append(cmds, m.UpdatePanes(msg))
 
 	return m, tea.Batch(cmds...)
 }

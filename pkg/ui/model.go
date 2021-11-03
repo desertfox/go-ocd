@@ -1,6 +1,8 @@
 package ui
 
 import (
+	"fmt"
+
 	"github.com/charmbracelet/bubbles/help"
 	"github.com/charmbracelet/lipgloss"
 	"github.com/go-ocd/pkg/list"
@@ -47,7 +49,11 @@ func NewModel() Model {
 }
 
 func (m Model) GetNamespaces() []string {
-	return []string{"namespace1", "namespace2"}
+	var namespaces []string
+	for i := 1; i <= 100; i++ {
+		namespaces = append(namespaces, fmt.Sprintf("namespace%d", i))
+	}
+	return namespaces
 }
 
 func (m Model) GetBuildConfig() []string {

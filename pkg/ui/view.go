@@ -44,3 +44,13 @@ func (m *Model) buildPane(p buildPaneMsg) (tea.Model, tea.Cmd) {
 
 	return m, nil
 }
+
+func (m *Model) UpdatePanes(msg tea.Msg) tea.Cmd {
+	var cmds []tea.Cmd
+
+	for k := range m.panes {
+		cmds = append(cmds, m.panes[k].Update(msg))
+	}
+
+	return tea.Batch(cmds...)
+}

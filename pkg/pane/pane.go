@@ -2,6 +2,7 @@ package pane
 
 import (
 	"github.com/charmbracelet/bubbles/viewport"
+	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -20,6 +21,12 @@ func NewModel(content string) *Model {
 
 func (m *Model) SetContent(content string) {
 	m.viewport.SetContent(content)
+}
+
+func (m *Model) Update(msg tea.Msg) tea.Cmd {
+	var cmd tea.Cmd
+	m.viewport, cmd = m.viewport.Update(msg)
+	return cmd
 }
 
 func (m *Model) Width() int {
