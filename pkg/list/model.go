@@ -5,8 +5,10 @@ import (
 )
 
 type Model struct {
-	kind string
-	list list.Model
+	kind   string
+	height int
+	width  int
+	list   list.Model
 }
 
 func NewModel(kind string, newItems []string) Model {
@@ -27,6 +29,8 @@ func NewModel(kind string, newItems []string) Model {
 }
 
 func (m *Model) SetSize(width, height int) {
+	m.width = width
+	m.height = height
 	m.list.SetSize(width, height)
 }
 

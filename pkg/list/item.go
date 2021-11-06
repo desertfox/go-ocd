@@ -31,4 +31,6 @@ func (m *Model) AddItems(newItems []string) {
 	// Setup list
 	delegate := newItemDelegate(delegateKeys)
 	m.list = list.NewModel(items, delegate, 0, 0)
+
+	m.list.SetSize(m.width, m.height)
 }
