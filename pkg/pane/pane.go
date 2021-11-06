@@ -2,7 +2,6 @@ package pane
 
 import (
 	"github.com/charmbracelet/bubbles/viewport"
-	tea "github.com/charmbracelet/bubbletea"
 	"github.com/charmbracelet/lipgloss"
 )
 
@@ -11,8 +10,8 @@ type Model struct {
 	style    lipgloss.Style
 }
 
-func NewModel(content string) *Model {
-	m := &Model{}
+func NewModel(content string) Model {
+	m := Model{}
 
 	m.SetContent(content)
 
@@ -21,12 +20,6 @@ func NewModel(content string) *Model {
 
 func (m *Model) SetContent(content string) {
 	m.viewport.SetContent(content)
-}
-
-func (m *Model) Update(msg tea.Msg) tea.Cmd {
-	var cmd tea.Cmd
-	m.viewport, cmd = m.viewport.Update(msg)
-	return cmd
 }
 
 func (m *Model) Width() int {
@@ -48,12 +41,4 @@ func (m *Model) SetSize(width, height int) {
 
 func (m *Model) SetStyle(s lipgloss.Style) {
 	m.style = s
-}
-
-func (m Model) View() string {
-	return m.style.Copy().
-		BorderForeground(lipgloss.Color("#b8bb26")).
-		Border(lipgloss.NormalBorder()).
-		Width(m.viewport.Width).
-		Render(m.viewport.View())
 }

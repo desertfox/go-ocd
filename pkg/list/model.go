@@ -1,25 +1,35 @@
 package list
 
 import (
-	"github.com/charmbracelet/lipgloss"
+	"github.com/charmbracelet/bubbles/list"
 )
 
 type Model struct {
-	cursor        int
-	kind          string
-	style         lipgloss.Style
-	selectedStyle lipgloss.Style
-	items         []item
+	kind string
+	list list.Model
 }
 
-func NewModel(kind string) Model {
+func NewModel(kind string, newItems []string) Model {
 	m := Model{}
 
-	m.cursor = 0
 	m.kind = kind
-	m.style = lipgloss.NewStyle()
-	m.selectedStyle = m.style.Copy().Foreground(lipgloss.Color("226"))
-	m.items = []item{}
+
+	items := make([]list.Item, len(newItems))
+	for i := 0; i < len(newItems); i++ {
+		items[i] = newItem(newItems[i])
+	}
+
+	var delegateKeys = newDelegateKeyMap()
+	delegate := newItemDelegate(delegateKeys)
+	m.list = list.NewModel(items, delegate, 0, 0)
 
 	return m
+}
+
+func (m *Model) SetSize(width, height int) {
+	m.list.SetSize(width, height)
+}
+
+func (m *Model) SetKind(n string) {
+	m.kind = n
 }

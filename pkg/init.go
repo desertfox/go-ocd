@@ -1,9 +1,10 @@
-package ui
+package ocd
 
 import (
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/go-ocd/pkg/commands"
 )
 
 func (m Model) Init() tea.Cmd {
@@ -16,9 +17,9 @@ func (m Model) Init() tea.Cmd {
 
 	switch {
 	case namespace != "":
-		cmds = append(cmds, m.setNamespaceCmd(namespace))
+		cmds = append(cmds, commands.SetNamespaceCmd(namespace))
 	default:
-		cmds = append(cmds, m.getNamespacesCmd())
+		cmds = append(cmds, commands.GetNamespacesCmd())
 	}
 
 	return tea.Batch(cmds...)

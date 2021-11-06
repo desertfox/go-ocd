@@ -6,14 +6,14 @@ import (
 	"os"
 
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/go-ocd/pkg/ui"
+	ocd "github.com/go-ocd/pkg"
 )
 
 func main() {
 	var opts []tea.ProgramOption
 	opts = append(opts, tea.WithAltScreen())
 
-	m := ui.NewModel()
+	m := ocd.NewModel()
 	p := tea.NewProgram(m, opts...)
 	f, err := tea.LogToFile("debug.log", "debug")
 	if err != nil {
