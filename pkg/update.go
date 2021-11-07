@@ -25,9 +25,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case commands.SetKindMsg:
 		m.handleSetKindMsg(msg)
 
-	case commands.GetKindInstanceDescribeMsg:
-		m.handleGetKindInstanceDescribeMsg(msg)
-
 	case tea.WindowSizeMsg:
 		m.handleWindowSizeMsg(msg)
 
@@ -41,8 +38,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 		case key.Matches(msg, m.keys.Enter):
 			return m.handleEnterKey()
+
 		case key.Matches(msg, m.keys.Delete):
 			return m, nil
+
 		case key.Matches(msg, m.keys.Back):
 			return m.handleGoBack()
 		}
@@ -89,11 +88,6 @@ func (m *Model) handleEnterKey() (tea.Model, tea.Cmd) {
 	default:
 		return m, commands.GetKindInstanceDescribeCmd(m.list.GetItemAtCursor())
 	}
-}
-
-func (m *Model) handleGetKindInstanceDescribeMsg(describe commands.GetKindInstanceDescribeMsg) (tea.Model, tea.Cmd) {
-	m.pane.SetContent(string(describe))
-	return m, nil
 }
 
 func (m *Model) handleGoBack() (tea.Model, tea.Cmd) {

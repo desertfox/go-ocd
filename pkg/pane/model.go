@@ -8,6 +8,8 @@ import (
 type Model struct {
 	viewport viewport.Model
 	style    lipgloss.Style
+	width    int
+	height   int
 }
 
 func NewModel(content string) Model {
@@ -31,14 +33,15 @@ func (m *Model) Height() int {
 }
 
 func (m *Model) SetSize(width, height int) {
-	border := lipgloss.NormalBorder()
+	m.width = width
+	m.height = height
+
 	m.style = lipgloss.NewStyle().
-		Border(border)
+		Width(m.width).
+		Height(m.height).
+		Border(lipgloss.NormalBorder()).
+		BorderForeground(lipgloss.Color("#fe8019"))
 
-	m.viewport.Width = width   // - m.style.GetHorizontalBorderSize()
-	m.viewport.Height = height // - m.style.GetVerticalBorderSize()
-}
-
-func (m *Model) SetStyle(s lipgloss.Style) {
-	m.style = s
+	m.viewport.Width = width - m.style.GetHorizontalBorderSize()
+	m.viewport.Height = height - m.style.GetVerticalBorderSize()
 }

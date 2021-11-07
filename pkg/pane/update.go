@@ -13,6 +13,8 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 		m.handleWindowSizeMsg(msg)
 	case commands.SetKindMsg:
 		return m.handleSetKindMsg(msg)
+	case commands.GetKindInstanceDescribeMsg:
+		return m.handleGetKindInstanceDescribeMsg(msg)
 	}
 
 	return m, m.updateViewport(msg)
@@ -38,5 +40,10 @@ func (m *Model) handleSetKindMsg(msg commands.SetKindMsg) (Model, tea.Cmd) {
 		m.SetContent(fmt.Sprintf("Please select a %s instance", msg))
 	}
 
+	return *m, nil
+}
+
+func (m *Model) handleGetKindInstanceDescribeMsg(describe commands.GetKindInstanceDescribeMsg) (Model, tea.Cmd) {
+	m.viewport.SetContent(string(describe))
 	return *m, nil
 }

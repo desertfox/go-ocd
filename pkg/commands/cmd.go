@@ -27,6 +27,6 @@ func SetKindCmd(kind string) tea.Cmd {
 
 func GetKindInstanceDescribeCmd(instance string) tea.Cmd {
 	return func() tea.Msg {
-		return GetKindInstanceDescribeMsg("describe")
+		return GetKindInstanceDescribeMsg(instance)
 	}
 }
