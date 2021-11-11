@@ -14,16 +14,9 @@ type Model struct {
 func NewModel(kind string, newItems []string) Model {
 	m := Model{}
 
-	m.kind = kind
+	m.SetKind(kind)
 
-	items := make([]list.Item, len(newItems))
-	for i := 0; i < len(newItems); i++ {
-		items[i] = newItem(newItems[i])
-	}
-
-	var delegateKeys = newDelegateKeyMap()
-	delegate := newItemDelegate(delegateKeys)
-	m.list = list.NewModel(items, delegate, 0, 0)
+	m.AddItems(newItems)
 
 	return m
 }

@@ -2,6 +2,7 @@ package ocd
 
 import (
 	"github.com/charmbracelet/bubbles/help"
+	"github.com/go-ocd/pkg/keys"
 	"github.com/go-ocd/pkg/list"
 	"github.com/go-ocd/pkg/pane"
 	"github.com/go-ocd/pkg/statusbar"
@@ -15,7 +16,7 @@ type Model struct {
 	namespace string
 	kind      string
 
-	keys keyMap
+	keys keys.KeyMap
 	help help.Model
 
 	ready bool
@@ -28,7 +29,7 @@ func NewModel() Model {
 	m.list = list.NewModel("Loading", []string{})
 	m.pane = pane.NewModel("")
 
-	m.keys = keys
+	m.keys = keys.Keys
 
 	m.ready = false
 

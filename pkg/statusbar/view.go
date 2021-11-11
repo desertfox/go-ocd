@@ -14,8 +14,7 @@ func (m Model) View() string {
 		style.
 		Padding(1, 1, 1, 1).
 		Bold(true).
-		Foreground(lipgloss.Color("#282828")).
-		Background(lipgloss.Color("#fe8019")).
+		Foreground(lipgloss.Color("#fe8019")).
 		Width(m.width).
 		Height(m.height).
 		Render(fmt.Sprintf("%s\n%s", namespaceString, kindString))

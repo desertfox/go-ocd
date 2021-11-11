@@ -1,6 +1,8 @@
 package list
 
-import "github.com/charmbracelet/bubbles/list"
+import (
+	"github.com/charmbracelet/bubbles/list"
+)
 
 type item string
 
@@ -19,18 +21,15 @@ func (m *Model) GetItemAtCursor() string {
 }
 
 func (m *Model) AddItems(newItems []string) {
-	var (
-		delegateKeys = newDelegateKeyMap()
-	)
-
 	items := make([]list.Item, len(newItems))
 	for i := 0; i < len(newItems); i++ {
 		items[i] = newItem(newItems[i])
 	}
 
-	// Setup list
-	delegate := newItemDelegate(delegateKeys)
-	m.list = list.NewModel(items, delegate, 0, 0)
+	list := list.NewModel(items, newItemDelegate(), 0, 0)
 
-	m.list.SetSize(m.width, m.height)
+	//list.SetShowHelp(false)
+	list.SetShowTitle(false)
+	list.SetSize(m.width, m.height)
+	m.list = list
 }

@@ -38,9 +38,9 @@ func (m *Model) SetSize(width, height int) {
 
 	m.style = lipgloss.NewStyle().
 		Width(m.width).
-		Height(m.height).
+		Height(m.height) /*.
 		Border(lipgloss.NormalBorder()).
-		BorderForeground(lipgloss.Color("#fe8019"))
+		BorderForeground(lipgloss.Color("#fe8019"))*/
 
 	m.viewport.Width = width - m.style.GetHorizontalBorderSize()
 	m.viewport.Height = height - m.style.GetVerticalBorderSize()
