@@ -1,7 +1,6 @@
 package ocd
 
 import (
-	"github.com/charmbracelet/bubbles/help"
 	"github.com/go-ocd/pkg/keys"
 	"github.com/go-ocd/pkg/list"
 	"github.com/go-ocd/pkg/pane"
@@ -17,7 +16,6 @@ type Model struct {
 	kind      string
 
 	keys keys.KeyMap
-	help help.Model
 
 	ready bool
 }

@@ -3,10 +3,7 @@ package keys
 import "github.com/charmbracelet/bubbles/key"
 
 type KeyMap struct {
-	Help key.Binding
-	Quit key.Binding
-	//Up   key.Binding
-	//Down   key.Binding
+	Quit   key.Binding
 	Enter  key.Binding
 	Delete key.Binding
 	Create key.Binding
@@ -15,28 +12,23 @@ type KeyMap struct {
 }
 
 func (k KeyMap) ShortHelp() []key.Binding {
-	return []key.Binding{k.Help, k.Quit}
+	return []key.Binding{k.Quit}
 }
 
 func (k KeyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{
-		//{k.Up, k.Down, k.Back, k.Enter},
-		{k.Delete, k.Create, k.Edit, k.Help, k.Quit},
+		{k.Delete, k.Create, k.Edit, k.Quit},
 	}
 }
 
 var Keys = KeyMap{
-	Help: key.NewBinding(
-		key.WithKeys("h", "?"),
-		key.WithHelp("h/?", "help"),
-	),
 	Quit: key.NewBinding(
 		key.WithKeys("q", "esc", "ctrl+c"),
 		key.WithHelp("q", "quit"),
 	),
 	Back: key.NewBinding(
-		key.WithKeys("left", "b"),
-		key.WithHelp("←/b", "go back"),
+		key.WithKeys("b"),
+		key.WithHelp("b", "go back"),
 	),
 
 	Enter: key.NewBinding(
