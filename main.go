@@ -13,7 +13,7 @@ func main() {
 	var opts []tea.ProgramOption
 	opts = append(opts, tea.WithAltScreen())
 
-	m := ocd.NewModel()
+	m := ocd.NewModel("halloween")
 	p := tea.NewProgram(m, opts...)
 	f, err := tea.LogToFile("debug.log", "debug")
 	if err != nil {

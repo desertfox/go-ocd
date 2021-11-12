@@ -12,8 +12,8 @@ type Model struct {
 	style     lipgloss.Style
 }
 
-func NewModel() Model {
-	return Model{"", "", 0, 0, lipgloss.NewStyle()}
+func NewModel(style lipgloss.Style) Model {
+	return Model{"", "", 0, 0, style}
 }
 
 func (m *Model) SetNamespace(n string) {

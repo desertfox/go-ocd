@@ -12,10 +12,12 @@ type Model struct {
 	height   int
 }
 
-func NewModel(content string) Model {
+func NewModel(content string, style lipgloss.Style) Model {
 	m := Model{}
 
 	m.SetContent(content)
+
+	m.style = style
 
 	return m
 }
@@ -36,11 +38,9 @@ func (m *Model) SetSize(width, height int) {
 	m.width = width
 	m.height = height
 
-	m.style = lipgloss.NewStyle().
+	m.style = m.style.Copy().
 		Width(m.width).
-		Height(m.height) /*.
-		Border(lipgloss.NormalBorder()).
-		BorderForeground(lipgloss.Color("#fe8019"))*/
+		Height(m.height)
 
 	m.viewport.Width = width - m.style.GetHorizontalBorderSize()
 	m.viewport.Height = height - m.style.GetVerticalBorderSize()
