@@ -33,8 +33,6 @@ func (m *Model) SetKindCmd(kind string) tea.Cmd {
 		items = m.api.GetBuildConfigs()
 	case "secrets":
 		items = m.api.GetSecrets()
-	default:
-		items = m.api.GetBuildConfig()
 	}
 
 	return func() tea.Msg {
@@ -43,14 +41,8 @@ func (m *Model) SetKindCmd(kind string) tea.Cmd {
 }
 
 func (m *Model) GetKindInstanceCmd(instance string) tea.Cmd {
-	//sting api.GetKind(m.Kind, instance)
+	yaml := m.api.GetInstance(m.namespace, m.kind, instance)
 	return func() tea.Msg {
-		return msgtypes.KindInstanceYaml("lots of yaml here")
-	}
-}
-
-func (m *Model) GetKindInstanceDescribeCmd(instance string) tea.Cmd {
-	return func() tea.Msg {
-		return msgtypes.GetKindInstanceDescribeMsg(instance)
+		return msgtypes.KindInstanceYaml(yaml)
 	}
 }

@@ -1,0 +1,10 @@
+
+apiVersion: v1
+kind: BuildConfig
+metadata:
+  labels:
+    app: something
+  name: something
+  namespace: somethingnamespace
+spec:
+  tomato: potato

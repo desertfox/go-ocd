@@ -1,6 +1,14 @@
 package api
 
-import "fmt"
+import (
+	_ "embed"
+	"fmt"
+)
+
+var (
+	//go:embed fakebuildconfig.yml
+	fakeYaml string
+)
 
 func (client Client) GetNamespaces() []string {
 	var namespaces []string
