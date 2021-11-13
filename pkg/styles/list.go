@@ -18,6 +18,10 @@ func init() {
 	themes["halloween"] = newHalloweenTheme()
 }
 
+func GetTheme(theme string) Style {
+	return themes[theme]
+}
+
 func newHalloweenTheme() Style {
 	return Style{
 		Statusbar: lipgloss.NewStyle().Padding(1, 1, 1, 1).Foreground(lipgloss.Color("#fe8019")),
@@ -26,8 +30,4 @@ func newHalloweenTheme() Style {
 			Border(lipgloss.NormalBorder()).
 			BorderForeground(lipgloss.Color("#fe8019")),
 	}
-}
-
-func GetTheme(theme string) Style {
-	return themes[theme]
 }

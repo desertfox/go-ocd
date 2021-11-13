@@ -1,6 +1,7 @@
 package ocd
 
 import (
+	"github.com/go-ocd/pkg/api"
 	"github.com/go-ocd/pkg/keys"
 	"github.com/go-ocd/pkg/list"
 	"github.com/go-ocd/pkg/pane"
@@ -21,9 +22,11 @@ type Model struct {
 	keys keys.KeyMap
 
 	ready bool
+
+	api api.Client
 }
 
-func NewModel(theme string) Model {
+func NewModel(theme string, kubeconfig string) Model {
 	m := Model{}
 
 	m.style = styles.GetTheme(theme)
@@ -37,6 +40,8 @@ func NewModel(theme string) Model {
 	m.keys = keys.Keys
 
 	m.ready = false
+
+	m.api = api.NewClient(kubeconfig)
 
 	return m
 }

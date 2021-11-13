@@ -2,7 +2,7 @@ package statusbar
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/go-ocd/pkg/commands"
+	"github.com/go-ocd/pkg/msgtypes"
 )
 
 func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
@@ -11,13 +11,13 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 	case tea.WindowSizeMsg:
 		return m.handleWindowSizeMsg(msg)
 
-	case commands.GetNamespacesMsg:
+	case msgtypes.GetNamespacesMsg:
 		return m.handleGetNamespacesMsg(msg)
 
-	case commands.SetNamespaceMsg:
+	case msgtypes.SetNamespaceMsg:
 		return m.handleSetNamespaceMsg(msg)
 
-	case commands.SetKindMsg:
+	case msgtypes.SetKindMsg:
 		return m.handleSetKindMsg(msg)
 	}
 
@@ -30,17 +30,17 @@ func (m Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (Model, tea.Cmd) {
 	return m, nil
 }
 
-func (m Model) handleGetNamespacesMsg(msg commands.GetNamespacesMsg) (Model, tea.Cmd) {
+func (m Model) handleGetNamespacesMsg(msg msgtypes.GetNamespacesMsg) (Model, tea.Cmd) {
 	m.SetNamespace("")
 	return m, nil
 }
 
-func (m Model) handleSetNamespaceMsg(msg commands.SetNamespaceMsg) (Model, tea.Cmd) {
+func (m Model) handleSetNamespaceMsg(msg msgtypes.SetNamespaceMsg) (Model, tea.Cmd) {
 	m.SetNamespace(string(msg))
 	return m, nil
 }
 
-func (m Model) handleSetKindMsg(msg commands.SetKindMsg) (Model, tea.Cmd) {
-	m.SetKind(string(msg))
+func (m Model) handleSetKindMsg(msg msgtypes.SetKindMsg) (Model, tea.Cmd) {
+	m.SetKind(string(msg.Kind))
 	return m, nil
 }
