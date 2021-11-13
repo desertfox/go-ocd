@@ -3,6 +3,7 @@ package ocd
 import (
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/go-ocd/pkg/list"
 	"github.com/go-ocd/pkg/msgtypes"
 )
 
@@ -13,10 +14,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
 
 	case msgtypes.GetNamespacesMsg:
-		m.handleGetNamespacesMsg(&cmds, msg)
+		cmds = append(cmds, m.handleGetNamespacesMsg(msg))
 
 	case msgtypes.SetNamespaceMsg:
-		m.handleSetNamespaceMsg(&cmds, msg)
+		cmds = append(cmds, m.handleSetNamespaceMsg(msg))
 
 	case msgtypes.SetKindMsg:
 		m.handleSetKindMsg(msg)
@@ -26,14 +27,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	case tea.KeyMsg:
 		switch {
-		case key.Matches(msg, m.keys.Quit):
-			return m, tea.Quit
-
 		case key.Matches(msg, m.keys.Enter):
-			return m.handleEnterKey()
 
-		case key.Matches(msg, m.keys.Delete):
-			return m, nil
+			return m.handleEnterKey()
 
 		case key.Matches(msg, m.keys.Back):
 			return m.handleGoBack()
@@ -58,14 +54,14 @@ func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) {
 	}
 }
 
-func (m *Model) handleGetNamespacesMsg(cmds *[]tea.Cmd, msg msgtypes.GetNamespacesMsg) {
+func (m *Model) handleGetNamespacesMsg(msg msgtypes.GetNamespacesMsg) tea.Cmd {
 	m.SetNamespace("")
-	*cmds = append(*cmds, m.SetKindCmd("namespace"))
+	return m.SetKindCmd("namespace")
 }
 
-func (m *Model) handleSetNamespaceMsg(cmds *[]tea.Cmd, msg msgtypes.SetNamespaceMsg) {
+func (m *Model) handleSetNamespaceMsg(msg msgtypes.SetNamespaceMsg) tea.Cmd {
 	m.SetNamespace(string(msg))
-	*cmds = append(*cmds, m.SetKindCmd("kind"))
+	return m.SetKindCmd("kind")
 }
 
 func (m *Model) handleSetKindMsg(msg msgtypes.SetKindMsg) {
@@ -73,14 +69,22 @@ func (m *Model) handleSetKindMsg(msg msgtypes.SetKindMsg) {
 
 	switch msg.Kind {
 	case "namespace":
+		m.keys.Delete.SetEnabled(false)
+		m.keys.Edit.SetEnabled(false)
+		m.keys.Back.SetEnabled(false)
 		m.list.SetKind("namespace")
-		m.list.AddItems(msg.Items)
+		m.list = list.NewModel(m.kind, m.list.Height, m.list.Width, msg.Items)
 	case "kind":
 		m.list.SetKind("kind")
-		m.list.AddItems(msg.Items)
-	default:
+		m.list = list.NewModel(m.kind, m.list.Height, m.list.Width, msg.Items)
+
+	//Need to be able to match against all the different kinds
+	default: //This is in the context of an instance
+		m.keys.Delete.SetEnabled(true)
+		m.keys.Edit.SetEnabled(true)
+		m.keys.Back.SetEnabled(true)
 		m.list.SetKind(string(m.kind))
-		m.list.AddItems(msg.Items)
+		m.list = list.NewModel(m.kind, m.list.Height, m.list.Width, msg.Items)
 	}
 
 }
@@ -92,6 +96,7 @@ func (m *Model) handleEnterKey() (tea.Model, tea.Cmd) {
 	case "kind":
 		return m, m.SetKindCmd(m.list.GetItemAtCursor())
 	default:
+		m.keys.Enter.SetEnabled(false)
 		return m, m.GetKindInstanceCmd(m.list.GetItemAtCursor())
 	}
 }
@@ -103,6 +108,11 @@ func (m *Model) handleGoBack() (tea.Model, tea.Cmd) {
 	case "kind":
 		return m, m.GetNamespacesCmd()
 	default:
+		m.keys.Delete.SetEnabled(false)
+		m.keys.Edit.SetEnabled(false)
+		m.keys.Back.SetEnabled(false)
+		m.keys.Enter.SetEnabled(true)
+
 		return m, m.SetKindCmd("kind")
 	}
 }

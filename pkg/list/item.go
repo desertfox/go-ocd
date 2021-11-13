@@ -25,11 +25,5 @@ func (m *Model) AddItems(newItems []string) {
 	for i := 0; i < len(newItems); i++ {
 		items[i] = newItem(newItems[i])
 	}
-
-	list := list.NewModel(items, newItemDelegate(), 0, 0)
-
-	//list.SetShowHelp(false)
-	list.SetShowTitle(false)
-	list.SetSize(m.width, m.height)
-	m.list = list
+	m.items = items
 }

@@ -19,5 +19,5 @@ func (m *Model) updateList(msg tea.Msg) tea.Cmd {
 }
 
 func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) {
-	m.SetSize(msg.Width/2, msg.Height-20)
+	m.SetSize(msg.Height-20, msg.Width/2)
 }

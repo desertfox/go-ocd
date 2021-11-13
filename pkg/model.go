@@ -19,7 +19,7 @@ type Model struct {
 	namespace string
 	kind      string
 
-	keys keys.KeyMap
+	keys *keys.MasterKeyMap
 
 	ready bool
 
@@ -33,11 +33,11 @@ func NewModel(theme string, kubeconfig string) Model {
 
 	m.statusbar = statusbar.NewModel(m.style.Statusbar)
 
-	m.list = list.NewModel("Loading", []string{})
+	m.list = list.NewModel("Loading", int(0), int(0), []string{})
 
 	m.pane = pane.NewModel("", m.style.Pane)
 
-	m.keys = keys.Keys
+	m.keys = &keys.Keys
 
 	m.ready = false
 
