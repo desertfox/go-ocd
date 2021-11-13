@@ -7,42 +7,34 @@ import (
 	"github.com/go-ocd/pkg/msgtypes"
 )
 
-func SetNamespaceCmd(namespace string) tea.Cmd {
+func (m *Model) SetNamespaceCmd(namespace string) tea.Cmd {
 	return func() tea.Msg {
 		return msgtypes.SetNamespaceMsg(namespace)
 	}
 }
 
-type Apier interface {
-	GetNamespaces() []string
-	GetAvailKinds() []string
-	GetBuildConfigs() []string
-	GetBuildConfig() []string
-	GetSecrets() []string
-}
-
-func GetNamespacesCmd(api Apier) tea.Cmd {
-	fakeNamespaces := api.GetNamespaces()
+func (m *Model) GetNamespacesCmd() tea.Cmd {
+	namespaces := m.api.GetNamespaces()
 
 	return func() tea.Msg {
-		return msgtypes.GetNamespacesMsg(fakeNamespaces)
+		return msgtypes.GetNamespacesMsg(namespaces)
 	}
 }
 
-func SetKindCmd(kind string, api Apier) tea.Cmd {
+func (m *Model) SetKindCmd(kind string) tea.Cmd {
 	var items []string
 
 	switch strings.ToLower(kind) {
 	case "namespace":
-		items = api.GetNamespaces()
+		items = m.api.GetNamespaces()
 	case "kind":
-		items = api.GetAvailKinds()
+		items = m.api.GetAvailKinds()
 	case "buildconfig":
-		items = api.GetBuildConfigs()
+		items = m.api.GetBuildConfigs()
 	case "secrets":
-		items = api.GetSecrets()
+		items = m.api.GetSecrets()
 	default:
-		items = api.GetBuildConfig()
+		items = m.api.GetBuildConfig()
 	}
 
 	return func() tea.Msg {
@@ -50,14 +42,14 @@ func SetKindCmd(kind string, api Apier) tea.Cmd {
 	}
 }
 
-func GetKindInstanceCmd(instance string) tea.Cmd {
+func (m *Model) GetKindInstanceCmd(instance string) tea.Cmd {
 	//sting api.GetKind(m.Kind, instance)
 	return func() tea.Msg {
 		return msgtypes.KindInstanceYaml("lots of yaml here")
 	}
 }
 
-func GetKindInstanceDescribeCmd(instance string) tea.Cmd {
+func (m *Model) GetKindInstanceDescribeCmd(instance string) tea.Cmd {
 	return func() tea.Msg {
 		return msgtypes.GetKindInstanceDescribeMsg(instance)
 	}

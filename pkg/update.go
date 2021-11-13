@@ -60,12 +60,12 @@ func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) {
 
 func (m *Model) handleGetNamespacesMsg(cmds *[]tea.Cmd, msg msgtypes.GetNamespacesMsg) {
 	m.SetNamespace("")
-	*cmds = append(*cmds, SetKindCmd("namespace", m.api))
+	*cmds = append(*cmds, m.SetKindCmd("namespace"))
 }
 
 func (m *Model) handleSetNamespaceMsg(cmds *[]tea.Cmd, msg msgtypes.SetNamespaceMsg) {
 	m.SetNamespace(string(msg))
-	*cmds = append(*cmds, SetKindCmd("kind", m.api))
+	*cmds = append(*cmds, m.SetKindCmd("kind"))
 }
 
 func (m *Model) handleSetKindMsg(msg msgtypes.SetKindMsg) {
@@ -88,21 +88,21 @@ func (m *Model) handleSetKindMsg(msg msgtypes.SetKindMsg) {
 func (m *Model) handleEnterKey() (tea.Model, tea.Cmd) {
 	switch m.kind {
 	case "namespace":
-		return m, SetNamespaceCmd(m.list.GetItemAtCursor())
+		return m, m.SetNamespaceCmd(m.list.GetItemAtCursor())
 	case "kind":
-		return m, SetKindCmd(m.list.GetItemAtCursor(), m.api)
+		return m, m.SetKindCmd(m.list.GetItemAtCursor())
 	default:
-		return m, GetKindInstanceCmd(m.list.GetItemAtCursor())
+		return m, m.GetKindInstanceCmd(m.list.GetItemAtCursor())
 	}
 }
 
 func (m *Model) handleGoBack() (tea.Model, tea.Cmd) {
 	switch m.kind {
 	case "namespace":
-		return m, GetNamespacesCmd(m.api)
+		return m, m.GetNamespacesCmd()
 	case "kind":
-		return m, GetNamespacesCmd(m.api)
+		return m, m.GetNamespacesCmd()
 	default:
-		return m, SetKindCmd("kind", m.api)
+		return m, m.SetKindCmd("kind")
 	}
 }
