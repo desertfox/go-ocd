@@ -37,7 +37,7 @@ func NewModel(theme string, kubeconfig string) Model {
 
 	m.pane = pane.NewModel("", m.style.Pane)
 
-	m.keys = &keys.Keys
+	m.keys = keys.Keys
 
 	m.ready = false
 

@@ -28,7 +28,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	case tea.KeyMsg:
 		switch {
 		case key.Matches(msg, m.keys.Enter):
-
 			return m.handleEnterKey()
 
 		case key.Matches(msg, m.keys.Back):
@@ -69,20 +68,15 @@ func (m *Model) handleSetKindMsg(msg msgtypes.SetKindMsg) {
 
 	switch msg.Kind {
 	case "namespace":
-		m.keys.Delete.SetEnabled(false)
-		m.keys.Edit.SetEnabled(false)
-		m.keys.Back.SetEnabled(false)
+		m.keys.ShowInstanceKeys(false)
 		m.list.SetKind("namespace")
 		m.list = list.NewModel(m.kind, m.list.Height, m.list.Width, msg.Items)
 	case "kind":
 		m.list.SetKind("kind")
 		m.list = list.NewModel(m.kind, m.list.Height, m.list.Width, msg.Items)
-
 	//Need to be able to match against all the different kinds
 	default: //This is in the context of an instance
-		m.keys.Delete.SetEnabled(true)
-		m.keys.Edit.SetEnabled(true)
-		m.keys.Back.SetEnabled(true)
+		m.keys.ShowInstanceKeys(true)
 		m.list.SetKind(string(m.kind))
 		m.list = list.NewModel(m.kind, m.list.Height, m.list.Width, msg.Items)
 	}
@@ -96,7 +90,7 @@ func (m *Model) handleEnterKey() (tea.Model, tea.Cmd) {
 	case "kind":
 		return m, m.SetKindCmd(m.list.GetItemAtCursor())
 	default:
-		m.keys.Enter.SetEnabled(false)
+		m.keys.ShowSelectKeys(false)
 		return m, m.GetKindInstanceCmd(m.list.GetItemAtCursor())
 	}
 }
@@ -108,11 +102,8 @@ func (m *Model) handleGoBack() (tea.Model, tea.Cmd) {
 	case "kind":
 		return m, m.GetNamespacesCmd()
 	default:
-		m.keys.Delete.SetEnabled(false)
-		m.keys.Edit.SetEnabled(false)
-		m.keys.Back.SetEnabled(false)
-		m.keys.Enter.SetEnabled(true)
-
+		m.keys.ShowInstanceKeys(false)
+		m.keys.ShowSelectKeys(true)
 		return m, m.SetKindCmd("kind")
 	}
 }

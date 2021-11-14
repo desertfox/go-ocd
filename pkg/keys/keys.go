@@ -22,7 +22,17 @@ func (k MasterKeyMap) FullHelp() [][]key.Binding {
 	return [][]key.Binding{{k.Enter, k.Back, k.Edit, k.Delete}, {k.DumpToYaml}}
 }
 
-var Keys = MasterKeyMap{
+func (k *MasterKeyMap) ShowInstanceKeys(show bool) {
+	k.Delete.SetEnabled(show)
+	k.Edit.SetEnabled(show)
+	k.Back.SetEnabled(show)
+}
+
+func (k *MasterKeyMap) ShowSelectKeys(show bool) {
+	k.Enter.SetEnabled(show)
+}
+
+var Keys = &MasterKeyMap{
 	Back: key.NewBinding(
 		key.WithKeys("b"),
 		key.WithHelp("b", "go back"),
