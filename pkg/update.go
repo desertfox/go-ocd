@@ -26,13 +26,23 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.handleWindowSizeMsg(msg)
 
 	case tea.KeyMsg:
+
+		if m.selectedView == "pane" {
+			break
+		}
+
 		switch {
 		case key.Matches(msg, m.keys.Enter):
 			return m.handleEnterKey()
 
 		case key.Matches(msg, m.keys.Back):
 			return m.handleGoBack()
+
+		case key.Matches(msg, m.keys.SwitchSelected):
+			m.selectedView = "pane"
+
 		}
+
 	}
 
 	m.statusbar, cmd = m.statusbar.Update(msg)
@@ -104,6 +114,7 @@ func (m *Model) handleGoBack() (tea.Model, tea.Cmd) {
 	default:
 		m.keys.ShowInstanceKeys(false)
 		m.keys.ShowSelectKeys(true)
+
 		return m, m.SetKindCmd("kind")
 	}
 }

@@ -21,12 +21,13 @@ type Model struct {
 
 	keys *keys.MasterKeyMap
 
-	ready bool
+	ready        bool
+	selectedView string
 
 	api api.Client
 }
 
-func NewModel(theme string, kubeconfig string) Model {
+func NewModel(theme string, kubeconfig string, fake bool) Model {
 	m := Model{}
 
 	m.style = styles.GetTheme(theme)
@@ -41,7 +42,9 @@ func NewModel(theme string, kubeconfig string) Model {
 
 	m.ready = false
 
-	m.api = api.NewClient(kubeconfig)
+	m.selectedView = "list"
+
+	m.api = api.NewClient(kubeconfig, fake)
 
 	return m
 }

@@ -9,6 +9,11 @@ import (
 )
 
 func (client Client) GetBuildConfigs(namespace string) []string {
+
+	if client.fake {
+		return makeFakeList("buildconfig")
+	}
+
 	buildV1Client, _ := buildv1.NewForConfig(client.k8client)
 	builds, _ := buildV1Client.Builds(namespace).List(context.TODO(), metav1.ListOptions{})
 

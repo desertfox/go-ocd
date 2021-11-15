@@ -10,12 +10,13 @@ import (
 
 type Client struct {
 	k8client *rest.Config
+	fake     bool
 }
 
-func NewClient(kubeconfig string) Client {
+func NewClient(kubeconfig string, fake bool) Client {
 	k8client, _ := clientcmd.BuildConfigFromFlags("", kubeconfig)
 
-	return Client{k8client: k8client}
+	return Client{k8client, fake}
 }
 
 func (client Client) GetAvailKinds() []string {

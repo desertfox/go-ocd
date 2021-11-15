@@ -10,14 +10,10 @@ var (
 	fakeYaml string
 )
 
-func (client Client) GetNamespaces() []string {
-	var namespaces []string
+func makeFakeList(str string) []string {
+	var kind []string
 	for i := 1; i <= 100; i++ {
-		namespaces = append(namespaces, fmt.Sprintf("namespace%d", i))
+		kind = append(kind, fmt.Sprintf("%s-%d", str, i))
 	}
-	return namespaces
-}
-
-func (client Client) GetBuildConfig() []string {
-	return []string{"bc1", "bc2"}
+	return kind
 }

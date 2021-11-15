@@ -14,7 +14,7 @@ func (m *Model) SetNamespaceCmd(namespace string) tea.Cmd {
 }
 
 func (m *Model) GetNamespacesCmd() tea.Cmd {
-	namespaces := m.api.GetNamespaces()
+	namespaces := m.api.GetProjects()
 
 	return func() tea.Msg {
 		return msgtypes.GetNamespacesMsg(namespaces)
@@ -26,7 +26,7 @@ func (m *Model) SetKindCmd(kind string) tea.Cmd {
 
 	switch strings.ToLower(kind) {
 	case "namespace":
-		items = m.api.GetNamespaces()
+		items = m.api.GetProjects()
 	case "kind":
 		items = m.api.GetAvailKinds()
 	case "buildconfig":

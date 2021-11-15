@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"log"
 	"os"
@@ -10,13 +11,19 @@ import (
 	ocd "github.com/go-ocd/pkg"
 )
 
+var fake bool
+
+func init() {
+	flag.BoolVar(&fake, "fake", true, "Use fake api for ui testing")
+}
+
 func main() {
 	var opts []tea.ProgramOption
 	opts = append(opts, tea.WithAltScreen())
 
 	kubeconfig := filepath.Join(os.Getenv("HOME"), ".kube", "config")
 
-	m := ocd.NewModel("halloween", kubeconfig)
+	m := ocd.NewModel("halloween", kubeconfig, fake)
 	p := tea.NewProgram(m, opts...)
 	f, err := tea.LogToFile("debug.log", "debug")
 	if err != nil {

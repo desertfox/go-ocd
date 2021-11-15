@@ -9,9 +9,10 @@ type MasterKeyMap struct {
 	Enter key.Binding
 	Back  key.Binding
 	//Instance
-	Edit       key.Binding
-	Delete     key.Binding
-	DumpToYaml key.Binding
+	SwitchSelected key.Binding
+	Edit           key.Binding
+	Delete         key.Binding
+	DumpToYaml     key.Binding
 }
 
 func (k MasterKeyMap) ShortHelp() []key.Binding {
@@ -19,7 +20,7 @@ func (k MasterKeyMap) ShortHelp() []key.Binding {
 }
 
 func (k MasterKeyMap) FullHelp() [][]key.Binding {
-	return [][]key.Binding{{k.Enter, k.Back, k.Edit, k.Delete}, {k.DumpToYaml}}
+	return [][]key.Binding{{k.Enter, k.Back, k.SwitchSelected}, {k.Edit, k.Delete, k.DumpToYaml}}
 }
 
 func (k *MasterKeyMap) ShowInstanceKeys(show bool) {
@@ -40,6 +41,10 @@ var Keys = &MasterKeyMap{
 	Enter: key.NewBinding(
 		key.WithKeys("enter"),
 		key.WithHelp("<enter>", "select"),
+	),
+	SwitchSelected: key.NewBinding(
+		key.WithKeys("p"),
+		key.WithHelp("p", "switch pane"),
 	),
 	Edit: key.NewBinding(
 		key.WithKeys("e"),

@@ -8,6 +8,11 @@ import (
 )
 
 func (client Client) GetProjects() []string {
+
+	if client.fake {
+		return makeFakeList("namespaces")
+	}
+
 	var namespaces []string = []string{}
 
 	projectV1Client, _ := projectv1.NewForConfig(client.k8client)
@@ -17,5 +22,4 @@ func (client Client) GetProjects() []string {
 		namespaces = append(namespaces, project.Name)
 	}
 	return namespaces
-
 }
