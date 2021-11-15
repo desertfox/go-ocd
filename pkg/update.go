@@ -26,11 +26,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.handleWindowSizeMsg(msg)
 
 	case tea.KeyMsg:
-
-		if m.selectedView == "pane" {
-			break
-		}
-
 		switch {
 		case key.Matches(msg, m.keys.Enter):
 			return m.handleEnterKey()
@@ -39,8 +34,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			return m.handleGoBack()
 
 		case key.Matches(msg, m.keys.SwitchSelected):
-			m.selectedView = "pane"
-
+			if m.selectedView == "pane" {
+				m.selectedView = "list"
+			} else {
+				m.selectedView = "pane"
+			}
 		}
 
 	}
@@ -48,10 +46,10 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	m.statusbar, cmd = m.statusbar.Update(msg)
 	cmds = append(cmds, cmd)
 
-	m.list, cmd = m.list.Update(msg)
+	m.list, cmd = m.list.Update(msg, m.selectedView == "pane")
 	cmds = append(cmds, cmd)
 
-	m.pane, cmd = m.pane.Update(msg)
+	m.pane, cmd = m.pane.Update(msg, m.selectedView == "list")
 	cmds = append(cmds, cmd)
 
 	return m, tea.Batch(cmds...)

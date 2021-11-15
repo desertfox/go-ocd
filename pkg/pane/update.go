@@ -7,7 +7,7 @@ import (
 	"github.com/go-ocd/pkg/msgtypes"
 )
 
-func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
+func (m Model) Update(msg tea.Msg, disableKeys bool) (Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
 		m.handleWindowSizeMsg(msg)
@@ -17,6 +17,10 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 		return m.handleGetKindInstanceDescribeMsg(msg)
 	case msgtypes.KindInstanceYaml:
 		return m.handleKindInstanceYamlMsg(msg)
+	}
+
+	if disableKeys {
+		return m, nil
 	}
 
 	return m, m.updateViewport(msg)

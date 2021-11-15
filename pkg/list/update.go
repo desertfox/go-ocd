@@ -4,11 +4,16 @@ import (
 	tea "github.com/charmbracelet/bubbletea"
 )
 
-func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
+func (m Model) Update(msg tea.Msg, disableKeys bool) (Model, tea.Cmd) {
 	switch msg := msg.(type) {
 	case tea.WindowSizeMsg:
 		m.handleWindowSizeMsg(msg)
 	}
+
+	if disableKeys {
+		return m, nil
+	}
+
 	return m, m.updateList(msg)
 }
 
