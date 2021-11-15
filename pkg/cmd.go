@@ -30,7 +30,7 @@ func (m *Model) SetKindCmd(kind string) tea.Cmd {
 	case "kind":
 		items = m.api.GetAvailKinds()
 	case "buildconfig":
-		items = m.api.GetBuildConfigs()
+		items = m.api.GetBuildConfigs(m.namespace)
 	case "secrets":
 		items = m.api.GetSecrets()
 	}
