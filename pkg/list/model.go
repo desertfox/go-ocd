@@ -27,9 +27,7 @@ func NewModel(kind string, d helpers.Dimension, newItems []string, style lipglos
 	list.SetShowTitle(false)
 	m.list = list
 
-	m.Dimension = d
-
-	m.SetSize(d.W, d.H)
+	m.SetSize(d)
 
 	m.selected = true
 
@@ -39,10 +37,10 @@ func NewModel(kind string, d helpers.Dimension, newItems []string, style lipglos
 	return m
 }
 
-func (m *Model) SetSize(w, h int) {
-	m.Dimension.Set(w, h)
+func (m *Model) SetSize(d helpers.Dimension) {
+	m.Dimension = d
 
-	m.list.SetSize(w, h)
+	m.list.SetSize(m.Dimension.W, m.Dimension.H)
 }
 
 func (m *Model) SetKind(n string) {

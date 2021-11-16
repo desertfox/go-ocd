@@ -13,7 +13,7 @@ type Model struct {
 }
 
 func NewModel(style lipgloss.Style) Model {
-	return Model{"", "", helpers.NewDimensions(), style}
+	return Model{"", "", helpers.NewDimensions(int(0), int(0)), style}
 }
 
 func (m *Model) SetNamespace(n string) {
@@ -24,6 +24,6 @@ func (m *Model) SetKind(n string) {
 	m.kind = n
 }
 
-func (m *Model) SetSize(w, h int) {
-	m.Dimension.Set(w, h)
+func (m *Model) SetSize(d helpers.Dimension) {
+	m.Dimension = d
 }

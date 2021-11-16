@@ -2,6 +2,7 @@ package list
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/go-ocd/pkg/helpers"
 )
 
 func (m Model) Update(msg tea.Msg, disableKeys bool) (Model, tea.Cmd) {
@@ -24,5 +25,5 @@ func (m *Model) updateList(msg tea.Msg) tea.Cmd {
 }
 
 func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) {
-	m.SetSize(msg.Width/2, msg.Height-20)
+	m.SetSize(helpers.NewDimensions(msg.Width/2, msg.Height-20))
 }

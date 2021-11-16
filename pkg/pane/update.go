@@ -4,6 +4,7 @@ import (
 	"fmt"
 
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/go-ocd/pkg/helpers"
 	"github.com/go-ocd/pkg/msgtypes"
 )
 
@@ -33,7 +34,7 @@ func (m *Model) updateViewport(msg tea.Msg) tea.Cmd {
 }
 
 func (m *Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) {
-	m.SetSize(msg.Width/2-10, msg.Height-9)
+	m.SetSize(helpers.NewDimensions(msg.Width/2-10, msg.Height-9))
 }
 
 func (m *Model) handleSetKindMsg(msg msgtypes.SetKindMsg) (Model, tea.Cmd) {

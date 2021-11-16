@@ -2,6 +2,7 @@ package statusbar
 
 import (
 	tea "github.com/charmbracelet/bubbletea"
+	"github.com/go-ocd/pkg/helpers"
 	"github.com/go-ocd/pkg/msgtypes"
 )
 
@@ -26,7 +27,7 @@ func (m Model) Update(msg tea.Msg) (Model, tea.Cmd) {
 }
 
 func (m Model) handleWindowSizeMsg(msg tea.WindowSizeMsg) (Model, tea.Cmd) {
-	m.SetSize(msg.Width/2, 3)
+	m.SetSize(helpers.NewDimensions(msg.Width/2, 3))
 	return m, nil
 }
 

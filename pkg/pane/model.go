@@ -39,15 +39,15 @@ func (m *Model) Height() int {
 	return m.viewport.Height
 }
 
-func (m *Model) SetSize(w, h int) {
-	m.Dimension.Set(w, h)
+func (m *Model) SetSize(d helpers.Dimension) {
+	m.Dimension = d
 
 	m.style = m.style.Copy().
 		Width(m.Dimension.W).
 		Height(m.Dimension.H)
 
-	m.viewport.Width = w - m.style.GetHorizontalBorderSize()
-	m.viewport.Height = h - m.style.GetVerticalBorderSize()
+	m.viewport.Width = m.Dimension.W - m.style.GetHorizontalBorderSize()
+	m.viewport.Height = m.Dimension.H - m.style.GetVerticalBorderSize()
 }
 
 func (m *Model) ToggleSelected() {
