@@ -10,7 +10,7 @@ func (m Model) Update(msg tea.Msg, disableKeys bool) (Model, tea.Cmd) {
 		m.handleWindowSizeMsg(msg)
 	}
 
-	if disableKeys {
+	if !m.selected {
 		return m, nil
 	}
 

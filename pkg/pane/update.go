@@ -19,7 +19,7 @@ func (m Model) Update(msg tea.Msg, disableKeys bool) (Model, tea.Cmd) {
 		return m.handleKindInstanceYamlMsg(msg)
 	}
 
-	if disableKeys {
+	if !m.selected {
 		return m, nil
 	}
 

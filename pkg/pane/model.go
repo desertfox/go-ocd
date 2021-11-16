@@ -6,18 +6,23 @@ import (
 )
 
 type Model struct {
-	viewport viewport.Model
-	style    lipgloss.Style
-	width    int
-	height   int
+	viewport      viewport.Model
+	width         int
+	height        int
+	selected      bool
+	style         lipgloss.Style
+	selectedStyle lipgloss.Style
 }
 
-func NewModel(content string, style lipgloss.Style) Model {
+func NewModel(content string, style lipgloss.Style, selectedStyle lipgloss.Style) Model {
 	m := Model{}
 
 	m.SetContent(content)
 
 	m.style = style
+	m.selectedStyle = selectedStyle
+
+	m.selected = false
 
 	return m
 }
@@ -44,4 +49,8 @@ func (m *Model) SetSize(width, height int) {
 
 	m.viewport.Width = width - m.style.GetHorizontalBorderSize()
 	m.viewport.Height = height - m.style.GetVerticalBorderSize()
+}
+
+func (m *Model) ToggleSelected() {
+	m.selected = !m.selected
 }

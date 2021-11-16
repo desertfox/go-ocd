@@ -10,6 +10,7 @@ type Style struct {
 	Statusbar lipgloss.Style
 	List      lipgloss.Style
 	Pane      lipgloss.Style
+	Selected  lipgloss.Style
 }
 
 func init() {
@@ -26,7 +27,8 @@ func newHalloweenTheme() Style {
 	return Style{
 		Statusbar: lipgloss.NewStyle().Padding(1, 1, 1, 1).Foreground(lipgloss.Color("#fe8019")),
 		List:      lipgloss.NewStyle(),
-		Pane: lipgloss.NewStyle().Padding(2, 2, 2, 2).Border(lipgloss.NormalBorder()).
+		Pane:      lipgloss.NewStyle(),
+		Selected: lipgloss.NewStyle().Padding(2, 2, 2, 2).Border(lipgloss.NormalBorder()).
 			Border(lipgloss.NormalBorder()).
 			BorderForeground(lipgloss.Color("#fe8019")),
 	}

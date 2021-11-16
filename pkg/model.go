@@ -34,9 +34,9 @@ func NewModel(theme string, kubeconfig string, fake bool) Model {
 
 	m.statusbar = statusbar.NewModel(m.style.Statusbar)
 
-	m.list = list.NewModel("Loading", int(0), int(0), []string{})
+	m.list = list.NewModel("Loading", int(0), int(0), []string{}, m.style.List, m.style.Selected)
 
-	m.pane = pane.NewModel("", m.style.Pane)
+	m.pane = pane.NewModel("", m.style.Pane, m.style.Selected)
 
 	m.keys = keys.Keys
 
