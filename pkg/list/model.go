@@ -3,12 +3,12 @@ package list
 import (
 	"github.com/charmbracelet/bubbles/list"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/go-ocd/pkg/helpers"
 )
 
 type Model struct {
 	Kind          string
-	Height        int
-	Width         int
+	Dimension     helpers.Dimension
 	list          list.Model
 	items         []list.Item
 	selected      bool
@@ -16,7 +16,7 @@ type Model struct {
 	selectedStyle lipgloss.Style
 }
 
-func NewModel(kind string, height int, width int, newItems []string, style lipgloss.Style, selectedStyle lipgloss.Style) Model {
+func NewModel(kind string, d helpers.Dimension, newItems []string, style lipgloss.Style, selectedStyle lipgloss.Style) Model {
 	m := Model{}
 
 	m.SetKind(kind)
@@ -27,7 +27,9 @@ func NewModel(kind string, height int, width int, newItems []string, style lipgl
 	list.SetShowTitle(false)
 	m.list = list
 
-	m.SetSize(height, width)
+	m.Dimension = d
+
+	m.SetSize(d.W, d.H)
 
 	m.selected = true
 
@@ -37,10 +39,10 @@ func NewModel(kind string, height int, width int, newItems []string, style lipgl
 	return m
 }
 
-func (m *Model) SetSize(height, width int) {
-	m.Width = width
-	m.Height = height
-	m.list.SetSize(width, height)
+func (m *Model) SetSize(w, h int) {
+	m.Dimension.Set(w, h)
+
+	m.list.SetSize(w, h)
 }
 
 func (m *Model) SetKind(n string) {

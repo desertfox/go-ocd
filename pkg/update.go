@@ -36,8 +36,6 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, m.keys.SwitchSelected):
 			m.list.ToggleSelected()
 			m.pane.ToggleSelected()
-
-			//m.list.SetStyle(m.style.Selected)
 		}
 
 	}
@@ -77,15 +75,15 @@ func (m *Model) handleSetKindMsg(msg msgtypes.SetKindMsg) {
 	case "namespace":
 		m.keys.ShowInstanceKeys(false)
 		m.list.SetKind("namespace")
-		m.list = list.NewModel(m.kind, m.list.Height, m.list.Width, msg.Items, m.style.List, m.style.Selected)
+		m.list = list.NewModel(m.kind, m.list.Dimension, msg.Items, m.style.List, m.style.Selected)
 	case "kind":
 		m.list.SetKind("kind")
-		m.list = list.NewModel(m.kind, m.list.Height, m.list.Width, msg.Items, m.style.List, m.style.Selected)
+		m.list = list.NewModel(m.kind, m.list.Dimension, msg.Items, m.style.List, m.style.Selected)
 	//Need to be able to match against all the different kinds
 	default: //This is in the context of an instance
 		m.keys.ShowInstanceKeys(true)
 		m.list.SetKind(string(m.kind))
-		m.list = list.NewModel(m.kind, m.list.Height, m.list.Width, msg.Items, m.style.List, m.style.Selected)
+		m.list = list.NewModel(m.kind, m.list.Dimension, msg.Items, m.style.List, m.style.Selected)
 	}
 
 }

@@ -3,12 +3,12 @@ package pane
 import (
 	"github.com/charmbracelet/bubbles/viewport"
 	"github.com/charmbracelet/lipgloss"
+	"github.com/go-ocd/pkg/helpers"
 )
 
 type Model struct {
 	viewport      viewport.Model
-	width         int
-	height        int
+	Dimension     helpers.Dimension
 	selected      bool
 	style         lipgloss.Style
 	selectedStyle lipgloss.Style
@@ -39,16 +39,15 @@ func (m *Model) Height() int {
 	return m.viewport.Height
 }
 
-func (m *Model) SetSize(width, height int) {
-	m.width = width
-	m.height = height
+func (m *Model) SetSize(w, h int) {
+	m.Dimension.Set(w, h)
 
 	m.style = m.style.Copy().
-		Width(m.width).
-		Height(m.height)
+		Width(m.Dimension.W).
+		Height(m.Dimension.H)
 
-	m.viewport.Width = width - m.style.GetHorizontalBorderSize()
-	m.viewport.Height = height - m.style.GetVerticalBorderSize()
+	m.viewport.Width = w - m.style.GetHorizontalBorderSize()
+	m.viewport.Height = h - m.style.GetVerticalBorderSize()
 }
 
 func (m *Model) ToggleSelected() {

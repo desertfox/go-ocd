@@ -12,7 +12,7 @@ func (m Model) View() string {
 
 	return m.
 		style.
-		Width(m.width).
-		Height(m.height).
+		Width(m.Dimension.W).
+		Height(m.Dimension.H).
 		Render(output)
 }
