@@ -37,6 +37,19 @@ func NewModel(kind string, d helpers.Dimension, newItems []string, style lipglos
 	return m
 }
 
+func (m *Model) SetNewList(kind string, newItems []string) {
+	m.SetKind(kind)
+
+	m.AddItems(newItems)
+
+	list := list.NewModel(m.items, newItemDelegate(), 0, 0)
+	list.SetShowTitle(false)
+	m.list = list
+
+	m.SetSize(m.Dimension)
+
+}
+
 func (m *Model) SetSize(d helpers.Dimension) {
 	m.Dimension = d
 

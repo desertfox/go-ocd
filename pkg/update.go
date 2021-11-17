@@ -3,7 +3,6 @@ package ocd
 import (
 	"github.com/charmbracelet/bubbles/key"
 	tea "github.com/charmbracelet/bubbletea"
-	"github.com/go-ocd/pkg/list"
 	"github.com/go-ocd/pkg/msgtypes"
 )
 
@@ -74,16 +73,13 @@ func (m *Model) handleSetKindMsg(msg msgtypes.SetKindMsg) {
 	switch msg.Kind {
 	case "namespace":
 		m.keys.ShowInstanceKeys(false)
-		m.list.SetKind("namespace")
-		m.list = list.NewModel(m.kind, m.list.Dimension, msg.Items, m.style.List, m.style.Selected)
+		m.list.SetNewList(m.kind, msg.Items)
 	case "kind":
-		m.list.SetKind("kind")
-		m.list = list.NewModel(m.kind, m.list.Dimension, msg.Items, m.style.List, m.style.Selected)
+		m.list.SetNewList(m.kind, msg.Items)
 	//Need to be able to match against all the different kinds
 	default: //This is in the context of an instance
 		m.keys.ShowInstanceKeys(true)
-		m.list.SetKind(string(m.kind))
-		m.list = list.NewModel(m.kind, m.list.Dimension, msg.Items, m.style.List, m.style.Selected)
+		m.list.SetNewList(m.kind, msg.Items)
 	}
 
 }
