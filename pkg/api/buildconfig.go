@@ -27,7 +27,7 @@ func (client Client) GetBuildConfigs(namespace string) []string {
 	return buildconfigs
 }
 
-func (client Client) GetBuildConfigInstance(namespace, name string) string {
+func (client Client) GetBuildConfig(namespace, name string) string {
 
 	if client.fake {
 		return fakeYaml

@@ -27,7 +27,10 @@ func (client Client) GetInstance(namespace, kind, instance string) string {
 
 	switch strings.ToLower(kind) {
 	case "buildconfig":
-		return client.GetBuildConfigInstance(namespace, instance)
+		return client.GetBuildConfig(namespace, instance)
+
+	case "secret":
+		return client.GetSecret(namespace, instance)
 	}
 
 	return fmt.Sprintf("No supporting kind found for %s in namespace %s", kind, namespace)
