@@ -2,6 +2,7 @@ package api
 
 import (
 	"context"
+	"fmt"
 
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 
@@ -26,7 +27,14 @@ func (client Client) GetBuildConfigs(namespace string) []string {
 	return buildconfigs
 }
 
-func (client Client) GetBuildConfigInstance(namespace, instanceName string) string {
-	//return fmt.Sprintf("%s/BuildConfig/%s", namespace, instanceName)
-	return fakeYaml
+func (client Client) GetBuildConfigInstance(namespace, name string) string {
+
+	if client.fake {
+		return fakeYaml
+	}
+
+	buildV1Client, _ := buildv1.NewForConfig(client.k8client)
+	build, _ := buildV1Client.Builds(namespace).Get(context.TODO(), name, metav1.GetOptions{})
+
+	return fmt.Sprintf("%v", build)
 }
