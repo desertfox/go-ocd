@@ -8,7 +8,6 @@ import (
 )
 
 func (client Client) GetProjects() []string {
-
 	if client.fake {
 		return makeFakeList("namespaces")
 	}

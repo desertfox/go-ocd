@@ -1,6 +1,8 @@
 package ocd
 
 import (
+	"fmt"
+	"os"
 	"strings"
 
 	tea "github.com/charmbracelet/bubbletea"
@@ -44,5 +46,31 @@ func (m *Model) GetKindInstanceCmd(instance string) tea.Cmd {
 	yaml := m.api.GetInstance(m.namespace, m.kind, instance)
 	return func() tea.Msg {
 		return msgtypes.KindInstanceYaml(yaml)
+	}
+}
+
+func (m *Model) DumpToYamlCmd(instance string) tea.Cmd {
+	yaml := m.api.GetInstance(m.namespace, m.kind, instance)
+
+	filename := fmt.Sprintf("%s_%s_%s.yaml", m.namespace, m.kind, instance)
+
+	f, err := os.Create(filename)
+	if err != nil {
+		return func() tea.Msg {
+			return msgtypes.DumpToYamlMsg(false)
+		}
+	}
+	defer f.Close()
+
+	_, err = f.WriteString(yaml)
+
+	if err != nil {
+		return func() tea.Msg {
+			return msgtypes.DumpToYamlMsg(false)
+		}
+	}
+
+	return func() tea.Msg {
+		return msgtypes.DumpToYamlMsg(true)
 	}
 }

@@ -9,3 +9,4 @@ type SetKindMsg struct {
 type GetKindInstanceDescribeMsg string
 
 type KindInstanceYaml string
+type DumpToYamlMsg bool

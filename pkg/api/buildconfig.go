@@ -10,7 +10,6 @@ import (
 )
 
 func (client Client) GetBuildConfigs(namespace string) []string {
-
 	if client.fake {
 		return makeFakeList("buildconfig")
 	}
@@ -28,7 +27,6 @@ func (client Client) GetBuildConfigs(namespace string) []string {
 }
 
 func (client Client) GetBuildConfig(namespace, name string) string {
-
 	if client.fake {
 		return fakeYaml
 	}

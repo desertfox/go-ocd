@@ -35,8 +35,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		case key.Matches(msg, m.keys.SwitchSelected):
 			m.list.ToggleSelected()
 			m.pane.ToggleSelected()
+		case key.Matches(msg, m.keys.DumpToYaml):
+			return m.handleDumpToYaml()
 		}
-
 	}
 
 	m.statusbar, cmd = m.statusbar.Update(msg)
@@ -108,4 +109,8 @@ func (m *Model) handleGoBack() (tea.Model, tea.Cmd) {
 
 		return m, m.SetKindCmd("kind")
 	}
+}
+
+func (m *Model) handleDumpToYaml() (tea.Model, tea.Cmd) {
+	return m, m.DumpToYamlCmd(m.list.GetItemAtCursor())
 }

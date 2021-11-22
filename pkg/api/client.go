@@ -24,7 +24,6 @@ func (client Client) GetAvailKinds() []string {
 }
 
 func (client Client) GetInstance(namespace, kind, instance string) string {
-
 	switch strings.ToLower(kind) {
 	case "buildconfig":
 		return client.GetBuildConfig(namespace, instance)
