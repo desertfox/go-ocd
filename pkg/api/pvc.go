@@ -14,14 +14,10 @@ func (client Client) GetPersistentVolumeClaims(namespace string) []string {
 	}
 
 	kclient, _ := v1.NewForConfig(client.k8client)
-	pvc, _ := kclient.PersistentVolumeClaims(namespace).List(context.TODO(), metav1.ListOptions{})
+	pvcs, _ := kclient.PersistentVolumeClaims(namespace).List(context.TODO(), metav1.ListOptions{})
 
-	var pvcList []string
-	for _, s := range pvc.Items {
-		pvcList = append(pvcList, s.Name)
-	}
+	return client.parseResourceItems(pvcs)
 
-	return pvcList
 }
 
 func (client Client) GetPersistentVolumeClaim(namespace, name string) string {

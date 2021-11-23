@@ -18,6 +18,7 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.2.0 // indirect
 	golang.org/x/term v0.0.0-20210422114643-f5beecf764ed // indirect
+	k8s.io/api v0.22.3 // indirect
 	k8s.io/apimachinery v0.22.3 // indirect
 	k8s.io/client-go v0.22.3 // indirect
 )

@@ -16,12 +16,7 @@ func (client Client) GetNodes(namespace string) []string {
 	kclient, _ := v1.NewForConfig(client.k8client)
 	nodes, _ := kclient.Nodes().List(context.TODO(), metav1.ListOptions{})
 
-	var nodesList []string
-	for _, s := range nodes.Items {
-		nodesList = append(nodesList, s.Name)
-	}
-
-	return nodesList
+	return client.parseResourceItems(nodes)
 }
 
 func (client Client) GetNode(namespace, name string) string {

@@ -16,12 +16,7 @@ func (client Client) GetConfigMaps(namespace string) []string {
 	kclient, _ := v1.NewForConfig(client.k8client)
 	configmaps, _ := kclient.ConfigMaps(namespace).List(context.TODO(), metav1.ListOptions{})
 
-	var configmapsList []string
-	for _, s := range configmaps.Items {
-		configmapsList = append(configmapsList, s.Name)
-	}
-
-	return configmapsList
+	return client.parseResourceItems(configmaps)
 }
 
 func (client Client) GetConfigMap(namespace, name string) string {
