@@ -28,7 +28,7 @@ type Model struct {
 	api api.Client
 }
 
-func NewModel(theme string, kubeconfig string, fake bool) Model {
+func NewModel(namespace, theme, kubeconfig string, fake bool) Model {
 	m := Model{}
 
 	m.style = styles.GetTheme(theme)
@@ -38,6 +38,8 @@ func NewModel(theme string, kubeconfig string, fake bool) Model {
 	m.list = list.NewModel("Loading", helpers.NewDimensions(int(0), int(0)), []string{}, m.style.List, m.style.Selected)
 
 	m.pane = pane.NewModel("", m.style.Pane, m.style.Selected)
+
+	m.namespace = namespace
 
 	m.keys = keys.Keys
 

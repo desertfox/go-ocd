@@ -12,9 +12,13 @@ import (
 )
 
 var fake bool
+var namespace string
 
 func init() {
+	flag.StringVar(&namespace, "namespace", "", "Namespace to start at.")
 	flag.BoolVar(&fake, "fake", true, "Use fake api for ui testing")
+
+	flag.Parse()
 }
 
 func main() {
@@ -23,7 +27,7 @@ func main() {
 
 	kubeconfig := filepath.Join(os.Getenv("HOME"), ".kube", "config")
 
-	m := ocd.NewModel("halloween", kubeconfig, fake)
+	m := ocd.NewModel(namespace, "halloween", kubeconfig, fake)
 	p := tea.NewProgram(m, opts...)
 	f, err := tea.LogToFile("debug.log", "debug")
 	if err != nil {
