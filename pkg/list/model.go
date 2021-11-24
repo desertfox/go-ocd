@@ -63,3 +63,7 @@ func (m *Model) SetKind(n string) {
 func (m *Model) ToggleSelected() {
 	m.selected = !m.selected
 }
+
+func (m *Model) IsFiltering() bool {
+	return m.list.FilterState() == list.Filtering
+}

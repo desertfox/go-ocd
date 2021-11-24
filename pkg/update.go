@@ -25,6 +25,11 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 		m.handleWindowSizeMsg(msg)
 
 	case tea.KeyMsg:
+
+		if m.list.IsFiltering() {
+			break
+		}
+
 		switch {
 		case key.Matches(msg, m.keys.Enter):
 			return m.handleEnterKey()
