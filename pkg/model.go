@@ -2,7 +2,6 @@ package ocd
 
 import (
 	"github.com/go-ocd/pkg/api"
-	"github.com/go-ocd/pkg/helpers"
 	"github.com/go-ocd/pkg/keys"
 	"github.com/go-ocd/pkg/list"
 	"github.com/go-ocd/pkg/pane"
@@ -35,7 +34,7 @@ func NewModel(namespace, theme, kubeconfig string, fake bool) Model {
 
 	m.statusbar = statusbar.NewModel(m.style.Statusbar)
 
-	m.list = list.NewModel("Loading", helpers.NewDimensions(int(0), int(0)), []string{}, m.style.List, m.style.Selected)
+	m.list = list.NewModel(m.style.List, m.style.Selected)
 
 	m.pane = pane.NewModel("", m.style.Pane, m.style.Selected)
 

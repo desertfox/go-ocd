@@ -16,18 +16,14 @@ type Model struct {
 	selectedStyle lipgloss.Style
 }
 
-func NewModel(kind string, d helpers.Dimension, newItems []string, style lipgloss.Style, selectedStyle lipgloss.Style) Model {
+func NewModel(style lipgloss.Style, selectedStyle lipgloss.Style) Model {
 	m := Model{}
 
-	m.SetKind(kind)
-
-	m.AddItems(newItems)
+	m.AddItems([]string{})
 
 	list := list.NewModel(m.items, newItemDelegate(), 0, 0)
 	list.SetShowTitle(false)
 	m.list = list
-
-	m.SetSize(d)
 
 	m.selected = true
 
