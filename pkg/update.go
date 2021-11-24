@@ -76,6 +76,7 @@ func (m *Model) handleSetKindMsg(msg msgtypes.SetKindMsg) {
 		m.keys.ShowInstanceKeys(false)
 		m.list.SetNewList(m.kind, msg.Items)
 	case "kind":
+		m.keys.Back.SetEnabled(true)
 		m.list.SetNewList(m.kind, msg.Items)
 	//Need to be able to match against all the different kinds
 	default: //This is in the context of an instance

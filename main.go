@@ -29,6 +29,7 @@ func main() {
 
 	m := ocd.NewModel(namespace, "halloween", kubeconfig, fake)
 	p := tea.NewProgram(m, opts...)
+
 	f, err := tea.LogToFile("debug.log", "debug")
 	if err != nil {
 		fmt.Println("fatal:", err)
