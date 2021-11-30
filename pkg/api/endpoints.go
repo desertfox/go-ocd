@@ -16,12 +16,7 @@ func (client Client) GetEndpointss(namespace string) []string {
 	kclient, _ := v1.NewForConfig(client.k8client)
 	endpoints, _ := kclient.Endpoints(namespace).List(context.TODO(), metav1.ListOptions{})
 
-	var EndpointsList []string
-	for _, s := range endpoints.Items {
-		EndpointsList = append(EndpointsList, s.Name)
-	}
-
-	return EndpointsList
+	return client.parseResourceItems(endpoints)
 }
 
 func (client Client) GetEndpoints(namespace, name string) string {

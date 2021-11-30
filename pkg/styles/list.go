@@ -26,10 +26,8 @@ func GetTheme(theme string) Style {
 func newHalloweenTheme() Style {
 	return Style{
 		Statusbar: lipgloss.NewStyle().Padding(1, 1, 1, 1).Foreground(lipgloss.Color("#fe8019")),
-		List:      lipgloss.NewStyle(),
+		List:      lipgloss.NewStyle().Padding(1, 1, 1, 1),
 		Pane:      lipgloss.NewStyle(),
-		Selected: lipgloss.NewStyle().Padding(2, 2, 2, 2).Border(lipgloss.NormalBorder()).
-			Border(lipgloss.NormalBorder()).
-			BorderForeground(lipgloss.Color("#fe8019")),
+		Selected:  lipgloss.NewStyle().Border(lipgloss.NormalBorder()).BorderForeground(lipgloss.Color("#fe8019")),
 	}
 }
