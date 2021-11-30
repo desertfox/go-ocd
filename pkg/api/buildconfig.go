@@ -36,3 +36,14 @@ func (client Client) GetBuildConfig(namespace, name string) string {
 
 	return fmt.Sprintf("%v", build)
 }
+
+func (client Client) DelBuildConfig(namespace, name string) {
+	if client.fake {
+		return
+	}
+
+	buildV1Client, _ := buildv1.NewForConfig(client.k8client)
+	buildInterface := buildV1Client.Builds(namespace)
+	_ = buildInterface.Delete(context.TODO(), name, metav1.DeleteOptions{})
+
+}

@@ -74,3 +74,23 @@ func (m *Model) DumpToYamlCmd(instance string) tea.Cmd {
 		return msgtypes.DumpToYamlMsg(true)
 	}
 }
+
+func (m *Model) DeleteResourceCmd(instance string) tea.Cmd {
+
+	kind := m.kind
+
+	switch strings.ToLower(kind) {
+	case "namespace":
+
+	case "kind":
+
+	case "buildconfig":
+		m.api.DelBuildConfig(m.namespace, instance)
+	case "secrets":
+
+	}
+
+	return func() tea.Msg {
+		return nil
+	}
+}

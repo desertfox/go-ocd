@@ -42,6 +42,9 @@ func (m Model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			m.pane.ToggleSelected()
 		case key.Matches(msg, m.keys.DumpToYaml):
 			return m.handleDumpToYaml()
+
+		case key.Matches(msg, m.keys.Delete):
+			return m.handleDeleteResource()
 		}
 	}
 
@@ -119,4 +122,8 @@ func (m *Model) handleGoBack() (tea.Model, tea.Cmd) {
 
 func (m *Model) handleDumpToYaml() (tea.Model, tea.Cmd) {
 	return m, m.DumpToYamlCmd(m.list.GetItemAtCursor())
+}
+
+func (m *Model) handleDeleteResource() (tea.Model, tea.Cmd) {
+	return m, m.DeleteResourceCmd(m.list.GetItemAtCursor())
 }
