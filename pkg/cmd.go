@@ -2,6 +2,7 @@ package ocd
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"strings"
 
@@ -42,8 +43,9 @@ func (m *Model) SetKindCmd(kind string) tea.Cmd {
 	}
 }
 
-func (m *Model) GetKindInstanceCmd(instance string) tea.Cmd {
+func (m *Model) GetResourceToYAMLCmd(instance string) tea.Cmd {
 	yaml := m.api.GetInstance(m.namespace, m.kind, instance)
+
 	return func() tea.Msg {
 		return msgtypes.KindInstanceYaml(yaml)
 	}
@@ -56,18 +58,13 @@ func (m *Model) DumpToYamlCmd(instance string) tea.Cmd {
 
 	f, err := os.Create(filename)
 	if err != nil {
-		return func() tea.Msg {
-			return msgtypes.DumpToYamlMsg(false)
-		}
+		return m.SignalErrorCmd(err)
 	}
 	defer f.Close()
 
 	_, err = f.WriteString(yaml)
-
 	if err != nil {
-		return func() tea.Msg {
-			return msgtypes.DumpToYamlMsg(false)
-		}
+		return m.SignalErrorCmd(err)
 	}
 
 	return func() tea.Msg {
@@ -92,5 +89,30 @@ func (m *Model) DeleteResourceCmd(instance string) tea.Cmd {
 
 	return func() tea.Msg {
 		return nil
+	}
+}
+
+func (m *Model) EditResourceCmd(instance string) tea.Cmd {
+	yaml := m.api.GetInstance(m.namespace, m.kind, instance)
+
+	//write to temp file
+	file, err := ioutil.TempFile("tmp", "")
+	if err != nil {
+		return m.SignalErrorCmd(err)
+	}
+
+	file.WriteString(yaml)
+
+	//get editor from env?
+
+	return func() tea.Msg {
+		return nil
+	}
+
+}
+
+func (m *Model) SignalErrorCmd(err error) tea.Cmd {
+	return func() tea.Msg {
+		return msgtypes.Err(err)
 	}
 }

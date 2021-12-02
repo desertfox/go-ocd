@@ -80,6 +80,7 @@ func (m *Model) handleSetKindMsg(msg msgtypes.SetKindMsg) {
 	m.SetKind(string(msg.Kind))
 
 	switch msg.Kind {
+
 	case "namespace":
 		m.keys.ShowInstanceKeys(false)
 		m.list.SetNewList(m.kind, msg.Items)
@@ -91,18 +92,21 @@ func (m *Model) handleSetKindMsg(msg msgtypes.SetKindMsg) {
 		m.keys.ShowInstanceKeys(true)
 		m.list.SetNewList(m.kind, msg.Items)
 	}
-
 }
 
 func (m *Model) handleEnterKey() (tea.Model, tea.Cmd) {
+	item := m.list.GetItemAtCursor()
+
 	switch m.kind {
+
 	case "namespace":
-		return m, m.SetNamespaceCmd(m.list.GetItemAtCursor())
+		return m, m.SetNamespaceCmd(item)
 	case "kind":
-		return m, m.SetKindCmd(m.list.GetItemAtCursor())
+		return m, m.SetKindCmd(item)
 	default:
 		m.keys.ShowSelectKeys(false)
-		return m, m.GetKindInstanceCmd(m.list.GetItemAtCursor())
+
+		return m, m.GetResourceToYAMLCmd(item)
 	}
 }
 

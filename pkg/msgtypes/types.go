@@ -10,3 +10,5 @@ type GetKindInstanceDescribeMsg string
 
 type KindInstanceYaml string
 type DumpToYamlMsg bool
+
+type Err error
